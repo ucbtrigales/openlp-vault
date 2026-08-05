@@ -1,0 +1,10 @@
+click>=8.0
+google-api-python-client>=2.0.0
+google-auth>=2.0.0
+
+# OAuth helper for installed apps
+google-auth-oauthlib>=0.4.0
+
+# La GUI usa Tkinter, que viene instalado con Python en la mayoría de plataformas.
+# En Linux puede ser necesario instalar el paquete del sistema, por ejemplo:
+# sudo apt install python3-tk

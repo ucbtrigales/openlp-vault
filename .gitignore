@@ -1,0 +1,59 @@
+# Build outputs
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+env.bak/
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+pip-wheel-metadata/
+*.egg
+*.whl
+
+# Test and coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.nox/
+
+# Type checker caches
+.mypy_cache/
+.pytype/
+.pyright/
+
+# Editor and system files
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+credentials.json
+
+# Log files
+*.log
+
+# Temporary folders created by the app or tests
+tmp/
+temp/
+
+# Local Python version managers
+.python-version
+
+# Backup files
+*.bak
+*.tmp
