@@ -10,11 +10,14 @@ python -m PyInstaller --clean --onefile --console --name openlp-vault --paths sr
 python -m PyInstaller --clean --onefile --windowed --name openlp-vault-gui --paths src src/openlp_vault/gui.py
 
 mkdir -p AppDir/usr/bin
+mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+
 cp dist/openlp-vault-gui AppDir/usr/bin/
 chmod +x AppDir/usr/bin/openlp-vault-gui
 
 if [ -f "packaging/openlp-vault.png" ]; then
   cp packaging/openlp-vault.png AppDir/
+  cp packaging/openlp-vault.png AppDir/usr/share/icons/hicolor/256x256/apps/
 fi
 
 cat > AppDir/AppRun <<'EOF'
@@ -24,7 +27,7 @@ exec "$HERE/usr/bin/openlp-vault-gui" "$@"
 EOF
 chmod +x AppDir/AppRun
 
-cat > AppDir/openlp-vault-gui.desktop <<'EOF'
+cat > AppDir/openlp-vault.desktop <<'EOF'
 [Desktop Entry]
 Type=Application
 Name=OpenLP Vault
