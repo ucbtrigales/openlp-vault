@@ -1,0 +1,99 @@
+name: Package release assets
+
+on:
+  workflow_dispatch: {}
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  linux:
+    name: Linux AppImage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfuse2
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r requirements.txt pyinstaller
+      - name: Build AppImage
+        run: bash packaging/linux-appimage-build.sh
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-appimage
+          path: dist/*.AppImage
+
+  windows:
+    name: Windows installer
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      - name: Install Python dependencies
+        shell: pwsh
+        run: |
+          py -m pip install --upgrade pip setuptools wheel
+          py -m pip install -r requirements.txt pyinstaller
+      - name: Build Windows installer
+        shell: pwsh
+        run: pwsh packaging/build-windows.ps1
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: dist/*.exe
+
+  macos:
+    name: macOS DMG
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r requirements.txt pyinstaller
+      - name: Build macOS DMG
+        run: bash packaging/build-macos-dmg.sh
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg
+          path: dist/*.dmg
+
+  release:
+    name: Create GitHub Release
+    needs: [linux, windows, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+
+      - name: Display structure of downloaded files
+        run: ls -R release-assets
+
+      - name: Upload binaries to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release-assets/linux-appimage/*.AppImage
+            release-assets/windows-installer/*.exe
+            release-assets/macos-dmg/*.dmg
+          generate_release_notes: true
