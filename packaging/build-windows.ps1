@@ -7,7 +7,18 @@ New-Item -ItemType Directory -Path dist -Force
 
 # 2. Compilar binarios de Python (Consola y GUI)
 py -m PyInstaller --clean --onefile --console --name openlp-vault --paths src --collect-submodules openlp_vault src/openlp_vault/__main__.py
-py -m PyInstaller --clean --onefile --windowed --name openlp-vault-gui --paths src --collect-submodules openlp_vault packaging/openlp_vault_gui_launcher.py
+py -m PyInstaller --clean --onefile --windowed --name openlp-vault-gui --paths src --collect-submodules openlp_vault \
+  --hidden-import openlp_vault.backup \
+  --hidden-import openlp_vault.auth \
+  --hidden-import openlp_vault.config \
+  --hidden-import openlp_vault.discovery \
+  --hidden-import openlp_vault.integrity \
+  --hidden-import openlp_vault.observability \
+  --hidden-import openlp_vault.recovery \
+  --hidden-import openlp_vault.restore \
+  --hidden-import openlp_vault.utils \
+  --hidden-import openlp_vault.versioning \
+  packaging/openlp_vault_gui_launcher.py
 
 # 3. Localizar makensis (NSIS) de forma segura
 $makensisCmd = Get-Command makensis -ErrorAction SilentlyContinue
