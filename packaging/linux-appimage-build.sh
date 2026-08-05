@@ -6,8 +6,8 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$REPO_ROOT"
 
 rm -rf build dist AppDir OpenLPVault.AppImage appimagetool.AppImage
-python -m PyInstaller --clean --onefile --console --name openlp-vault --paths src src/openlp_vault/__main__.py
-python -m PyInstaller --clean --onefile --windowed --name openlp-vault-gui --paths src packaging/openlp_vault_gui_launcher.py
+python -m PyInstaller --clean --onefile --console --name openlp-vault --paths src --collect-submodules openlp_vault src/openlp_vault/__main__.py
+python -m PyInstaller --clean --onefile --windowed --name openlp-vault-gui --paths src --collect-submodules openlp_vault packaging/openlp_vault_gui_launcher.py
 
 mkdir -p AppDir/usr/bin
 mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
