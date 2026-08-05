@@ -13,6 +13,10 @@ mkdir -p AppDir/usr/bin
 cp dist/openlp-vault-gui AppDir/usr/bin/
 chmod +x AppDir/usr/bin/openlp-vault-gui
 
+if [ -f "packaging/openlp-vault.png" ]; then
+  cp packaging/openlp-vault.png AppDir/
+fi
+
 cat > AppDir/AppRun <<'EOF'
 #!/bin/sh
 HERE="$(dirname "$(readlink -f "${0}")")"

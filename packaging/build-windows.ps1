@@ -15,4 +15,5 @@ if (-not (Get-Command makensis -ErrorAction SilentlyContinue)) {
     choco install nsis -y
 }
 
+$env:PATH += ";C:\Program Files (x86)\NSIS;C:\Program Files\NSIS;C:\ProgramData\chocolatey\bin;C:\ProgramData\chocolatey\lib\nsis\tools"
 & makensis "$root\packaging\windows-installer.nsi"
