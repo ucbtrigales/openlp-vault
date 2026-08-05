@@ -32,26 +32,29 @@ jobs:
           path: dist/*.AppImage
 
   windows:
-    name: Windows installer
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
-        with:
-          python-version: 3.11
-      - name: Install Python dependencies
-        shell: pwsh
-        run: |
-          py -m pip install --upgrade pip setuptools wheel
-          py -m pip install -r requirements.txt pyinstaller
-      - name: Build Windows installer
-        shell: pwsh
-        run: pwsh packaging/build-windows.ps1
-      - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-installer
-          path: dist/*.exe
+      name: Windows installer
+      runs-on: windows-latest
+      steps:
+        - uses: actions/checkout@v5
+        - uses: actions/setup-python@v6
+          with:
+            python-version: 3.11
+        - name: Install NSIS
+          shell: pwsh
+          run: choco install nsis -y
+        - name: Install Python dependencies
+          shell: pwsh
+          run: |
+            py -m pip install --upgrade pip setuptools wheel
+            py -m pip install -r requirements.txt pyinstaller
+        - name: Build Windows installer
+          shell: pwsh
+          run: pwsh packaging/build-windows.ps1
+        - name: Upload Windows artifacts
+          uses: actions/upload-artifact@v4
+          with:
+            name: windows-installer
+            path: dist/*.exe
 
   macos:
     name: macOS DMG
