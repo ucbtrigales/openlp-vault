@@ -7,12 +7,14 @@ cd "$REPO_ROOT"
 
 rm -rf build dist AppDir OpenLPVault.AppImage appimagetool.AppImage
 python -m PyInstaller --clean --onefile --console --name openlp-vault --paths src src/openlp_vault/__main__.py
-python -m PyInstaller --clean --onefile --windowed --name openlp-vault-gui --paths src src/openlp_vault/gui.py
+python -m PyInstaller --clean --onefile --windowed --name openlp-vault-gui --paths src packaging/openlp_vault_gui_launcher.py
 
 mkdir -p AppDir/usr/bin
 mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
 
+cp dist/openlp-vault AppDir/usr/bin/
 cp dist/openlp-vault-gui AppDir/usr/bin/
+chmod +x AppDir/usr/bin/openlp-vault
 chmod +x AppDir/usr/bin/openlp-vault-gui
 
 if [ -f "packaging/openlp-vault.png" ]; then
@@ -23,6 +25,10 @@ fi
 cat > AppDir/AppRun <<'EOF'
 #!/bin/sh
 HERE="$(dirname "$(readlink -f "${0}")")"
+if [ "$1" = "--cli" ] || [ "$1" = "openlp-vault" ]; then
+  shift
+  exec "$HERE/usr/bin/openlp-vault" "$@"
+fi
 exec "$HERE/usr/bin/openlp-vault-gui" "$@"
 EOF
 chmod +x AppDir/AppRun

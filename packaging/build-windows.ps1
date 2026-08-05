@@ -1,19 +1,30 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
-$root = Split-Path $PSScriptRoot -Parent
+$root = Resolve-Path "$PSScriptRoot\.."
 Set-Location $root
 
+# 1. Limpiar construcciones previas
 Remove-Item -Recurse -Force build, dist -ErrorAction SilentlyContinue
-py -m pip install --upgrade pip setuptools wheel
-py -m pip install -r requirements.txt pyinstaller
+New-Item -ItemType Directory -Path dist -Force
 
+# 2. Compilar binarios de Python (Consola y GUI)
 py -m PyInstaller --clean --onefile --console --name openlp-vault --paths src src/openlp_vault/__main__.py
-py -m PyInstaller --clean --onefile --windowed --name openlp-vault-gui --paths src src/openlp_vault/gui.py
+py -m PyInstaller --clean --onefile --windowed --name openlp-vault-gui --paths src packaging/openlp_vault_gui_launcher.py
 
-if (-not (Get-Command makensis -ErrorAction SilentlyContinue)) {
-    choco install nsis -y
+# 3. Localizar makensis (NSIS) de forma segura
+$makensisCmd = Get-Command makensis -ErrorAction SilentlyContinue
+
+if ($makensisCmd) {
+    $makensis = $makensisCmd.Source
+} elseif (Test-Path "C:\ProgramData\chocolatey\bin\makensis.exe") {
+    $makensis = "C:\ProgramData\chocolatey\bin\makensis.exe"
+} elseif (Test-Path "C:\Program Files (x86)\NSIS\makensis.exe") {
+    $makensis = "C:\Program Files (x86)\NSIS\makensis.exe"
+} else {
+    throw "Error: makensis (NSIS) no está instalado o no se encuentra en las rutas estándar."
 }
 
-$env:PATH += ";C:\Program Files (x86)\NSIS;C:\Program Files\NSIS;C:\ProgramData\chocolatey\bin;C:\ProgramData\chocolatey\lib\nsis\tools"
-& makensis "$root\packaging\windows-installer.nsi"
+# 4. Crear el instalador unificado con NSIS
+& $makensis "$root\packaging\windows-installer.nsi"
+
+# 5. Eliminar los .exe individuales sueltos de dist/ para dejar solo el instalador Setup
+Remove-Item "dist\openlp-vault.exe" -Force
+Remove-Item "dist\openlp-vault-gui.exe" -Force
