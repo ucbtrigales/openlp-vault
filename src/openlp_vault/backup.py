@@ -80,9 +80,11 @@ def cleanup_backup_file(backup_path: Path) -> None:
 
 
 def _find_drive_folder(drive_service, folder_name: str, parent_folder_id: str | None = None) -> str | None:
+    escaped_folder_name = folder_name.replace("'", "\\'")
+
     query = [
         "mimeType = 'application/vnd.google-apps.folder'",
-        f"""name = '{folder_name.replace("'", "\\'")}'""",
+        f"name = '{escaped_folder_name}'",
         "trashed = false",
     ]
     if parent_folder_id:
