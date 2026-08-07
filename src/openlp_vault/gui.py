@@ -22,7 +22,7 @@ class OpenLPVaultGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("OpenLP Vault")
-        self.geometry("620x500")
+        self.geometry("500x400")
         self.resizable(False, False)
 
         self.drive_service = None
@@ -40,8 +40,7 @@ class OpenLPVaultGUI(tk.Tk):
         main_frame.pack(fill="both", expand=True)
 
         style = ttk.Style()
-        style.configure("TButton", font=(None, 11), padding=(14, 9))
-        style.configure("Bold.TButton", font=(None, 11, "bold"), padding=(14, 9))
+        style.configure("Bold.TButton", font=(None, 10, "bold"))
 
         ttk.Label(main_frame, text="OpenLP Vault", font=(None, 20, "bold")).pack(pady=(0, 12))
 
@@ -75,7 +74,7 @@ class OpenLPVaultGUI(tk.Tk):
 
         dialog = tk.Toplevel(self)
         dialog.title("Crear y subir respaldo")
-        dialog.geometry("760x250")
+        dialog.geometry("500x180")
         dialog.resizable(False, False)
 
         frame = ttk.Frame(dialog, padding=12)
@@ -87,9 +86,9 @@ class OpenLPVaultGUI(tk.Tk):
 
         button_frame = ttk.Frame(frame)
         button_frame.pack(fill="x", pady=10)
-        ttk.Button(button_frame, text="❌  Cancelar", command=dialog.destroy, width=16).pack(side="right")
-        ttk.Button(button_frame, text="💾  Crear (no subir)", command=lambda: self._create_local_backup(backup_name_var.get(), dialog), width=20).pack(side="right", padx=8)
-        ttk.Button(button_frame, text="⬆️  Crear y subir", command=lambda: self._backup(backup_name_var.get(), dialog), style="Bold.TButton", width=20).pack(side="right", padx=12)
+        ttk.Button(button_frame, text="❌  Cancelar", command=dialog.destroy, width=14).pack(side="right")
+        ttk.Button(button_frame, text="💾  Crear (no subir)", command=lambda: self._create_local_backup(backup_name_var.get(), dialog), width=16).pack(side="right", padx=8)
+        ttk.Button(button_frame, text="⬆️  Crear y subir", command=lambda: self._backup(backup_name_var.get(), dialog), style="Bold.TButton", width=16).pack(side="right", padx=12)
 
     def _default_backup_filename(self):
         hostname = os.uname().nodename.replace(" ", "_")
@@ -244,7 +243,7 @@ class OpenLPVaultGUI(tk.Tk):
         sorted_backups = sorted(self.backups, key=lambda item: item.get("createdTime", ""), reverse=True)
         dialog = tk.Toplevel(self)
         dialog.title("Descargar y restaurar un respaldo")
-        dialog.geometry("980x560")
+        dialog.geometry("750x450")
         dialog.resizable(False, False)
 
         frame = ttk.Frame(dialog, padding=12)
@@ -261,10 +260,10 @@ class OpenLPVaultGUI(tk.Tk):
 
         button_frame = ttk.Frame(frame)
         button_frame.pack(fill="x", pady=10, padx=2)
-        ttk.Button(button_frame, text="❌  Cancelar", command=dialog.destroy, width=16).pack(side="right")
-        ttk.Button(button_frame, text="🔄  Actualizar", command=lambda: self._refresh_restore_list(listbox), width=16).pack(side="right", padx=10)
-        ttk.Button(button_frame, text="🗑️  Eliminar", command=lambda: self._delete_selected(listbox, dialog), width=16).pack(side="right", padx=10)
-        ttk.Button(button_frame, text="⬇️  Descargar y restaurar", command=lambda: self._restore_selected(listbox, dialog), style="Bold.TButton", width=28).pack(side="right", padx=10)
+        ttk.Button(button_frame, text="❌  Cancelar", command=dialog.destroy, width=14).pack(side="right")
+        ttk.Button(button_frame, text="🔄  Actualizar", command=lambda: self._refresh_restore_list(listbox), width=14).pack(side="right", padx=10)
+        ttk.Button(button_frame, text="🗑️  Eliminar", command=lambda: self._delete_selected(listbox, dialog), width=14).pack(side="right", padx=10)
+        ttk.Button(button_frame, text="⬇️  Descargar y restaurar", command=lambda: self._restore_selected(listbox, dialog), style="Bold.TButton", width=24).pack(side="right", padx=10)
 
     def _restore_selected(self, listbox, dialog):
         selection = listbox.curselection()
@@ -393,7 +392,7 @@ class OpenLPVaultGUI(tk.Tk):
     def _open_configuration(self):
         dialog = tk.Toplevel(self)
         dialog.title("Configuración")
-        dialog.geometry("720x500")
+        dialog.geometry("600x390")
         dialog.resizable(False, False)
 
         frame = ttk.Frame(dialog, padding=12)
@@ -403,11 +402,11 @@ class OpenLPVaultGUI(tk.Tk):
 
         ttk.Label(frame, text="Ruta del archivo de credenciales (credentials.json):").pack(anchor="w", pady=(6, 0))
         ttk.Entry(frame, textvariable=self.credentials_path, width=80).pack(anchor="w", pady=2)
-        ttk.Button(frame, text="Seleccionar...", command=lambda: self._choose_credentials(dialog), width=18).pack(anchor="w", pady=2)
+        ttk.Button(frame, text="Seleccionar...", command=lambda: self._choose_credentials(dialog)).pack(anchor="w", pady=2)
 
         ttk.Label(frame, text="Directorio de datos de OpenLP:").pack(anchor="w", pady=(12, 0))
         ttk.Entry(frame, textvariable=self.source_path, width=80).pack(anchor="w", pady=2)
-        ttk.Button(frame, text="Seleccionar...", command=lambda: self._choose_source(dialog), width=18).pack(anchor="w", pady=2)
+        ttk.Button(frame, text="Seleccionar...", command=lambda: self._choose_source(dialog)).pack(anchor="w", pady=2)
 
         ttk.Label(frame, text="Nombre de carpeta en Drive:").pack(anchor="w", pady=(12, 0))
         ttk.Entry(frame, textvariable=self.drive_folder_name, width=80).pack(anchor="w", pady=2)
@@ -417,8 +416,8 @@ class OpenLPVaultGUI(tk.Tk):
         button_frame = ttk.Frame(frame)
         button_frame.pack(fill="x", pady=16)
         ttk.Label(button_frame, text=f"OpenLP Vault versión {__version__}", font=(None, 10, "bold")).pack(side="left")
-        ttk.Button(button_frame, text="❌  Cancelar", command=dialog.destroy, width=16).pack(side="right")
-        ttk.Button(button_frame, text="✅  Aceptar", command=lambda: self._save_configuration(dialog), width=18, style="Bold.TButton").pack(side="right", padx=10)
+        ttk.Button(button_frame, text="❌  Cancelar", command=dialog.destroy, width=12).pack(side="right")
+        ttk.Button(button_frame, text="✅  Aceptar", command=lambda: self._save_configuration(dialog), width=14, style="Bold.TButton").pack(side="right", padx=10)
 
     def _choose_credentials(self, parent=None):
         path = filedialog.askopenfilename(title="Seleccionar credentials.json", filetypes=[("JSON", "*.json")], parent=parent or self)
