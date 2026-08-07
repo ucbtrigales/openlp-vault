@@ -57,3 +57,5 @@ temp/
 # Backup files
 *.bak
 *.tmp
+
+openlp-vault-gui-clam_theme.sh

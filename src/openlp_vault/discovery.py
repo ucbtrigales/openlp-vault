@@ -7,26 +7,23 @@ from pathlib import Path
 
 DEFAULT_LINUX_PATHS = [
     Path.home() / ".var" / "app" / "org.openlp.OpenLP" / "data" / "openlp",
-    Path.home() / ".config" / "openlp",
     Path.home() / ".local" / "share" / "openlp",
+    Path.home() / ".config" / "openlp",
     Path.home() / ".openlp",
 ]
 DEFAULT_MAC_PATHS = [
-    Path.home() / "Library" / "Application Support" / "OpenLP",
-    Path.home() / "Library" / "Application Support" / "openlp",
+    Path.home() / "Library" / "Application Support" / "openlp" / "Data",
+    Path.home() / "Library" / "Application Support" / "openlp" / "data",
 ]
 DEFAULT_WINDOWS_PATHS = [
-    Path(os.getenv("LOCALAPPDATA", "")) / "OpenLP",
-    Path(os.getenv("APPDATA", "")) / "OpenLP",
-    Path(os.getenv("USERPROFILE", "")) / "AppData" / "Local" / "OpenLP",
+    Path(os.getenv("LOCALAPPDATA", "")) / "openlp" / "data",
+    Path(os.getenv("APPDATA", "")) / "openlp" / "data", 
+    Path(os.getenv("USERPROFILE", "")) / "AppData" / "Local" / "openlp",
 ]
 COMMON_MARKERS = [
-    "openlp.conf",
-    "openlp.cfg",
-    "database.db",
-    "openlp.sqlite",
     "songs",
-    "resources",
+    "bibles",
+    "images",
     "presentations",
 ]
 
