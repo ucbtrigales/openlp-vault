@@ -31,7 +31,7 @@ Comandos principales:
 openlp-vault auth --credentials credentials.json --debug
 ```
 
-El token se guardará por defecto en `~/.openlp_vault/token.json`.
+El token se guardará por defecto en `~/.openlp-vault/token.json`.
 
 ## Descubrimiento de OpenLP
 

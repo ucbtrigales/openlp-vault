@@ -37,7 +37,7 @@ openlp-vault auth --credentials credentials.json --debug
 ```
 
 3. Sigue el flujo del navegador para autorizar la app.
-4. Después de autorizar, el token se guardará en `~/.openlp_vault/token.json`.
+4. Después de autorizar, el token se guardará en `~/.openlp-vault/token.json`.
 
 ## Uso adicional
 

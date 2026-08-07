@@ -5,7 +5,7 @@ import json
 
 
 def default_config_path() -> Path:
-    return Path.home() / ".openlp_vault" / "config.json"
+    return Path.home() / ".openlp-vault" / "config.json"
 
 
 def load_config(path: Path | None = None) -> dict:
