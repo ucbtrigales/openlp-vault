@@ -14,6 +14,7 @@ except Exception:  # pragma: no cover - runtime
     MediaFileUpload = None
 
 LOG = logging.getLogger("openlp_vault.backup")
+UPLOAD_CHUNK_SIZE = 10 * 1024 * 1024
 
 
 def compute_file_hash(path: Path) -> str:
@@ -145,7 +146,12 @@ def upload_backup(backup_file: Path, drive_service, parent_folder_id: str | None
         LOG.debug("Subiendo a carpeta Drive %s", parent_folder_id)
 
     LOG.debug("Subiendo archivo %s a Drive", backup_file)
-    media = MediaFileUpload(str(backup_file), mimetype="application/zip")
+    media = MediaFileUpload(
+        str(backup_file),
+        mimetype="application/zip",
+        chunksize=UPLOAD_CHUNK_SIZE,
+        resumable=True,
+    )
     created = drive_service.files().create(
         body=file_metadata,
         media_body=media,
