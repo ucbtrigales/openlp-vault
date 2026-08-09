@@ -23,6 +23,8 @@ def test_windows_installer_contains_cli_and_gui():
     assert '!include "LogicLib.nsh"' in installer
     assert "ReadRegStr" in installer
     assert "ReadRegExpandStr" not in installer
+    assert 'ReadRegStr $0 HKLM "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment" "Path"' in installer
+    assert 'WriteRegExpandStr HKLM "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment" "Path" $0' in installer
     assert "/DPRODUCT_VERSION=$version" in build_script
 
 

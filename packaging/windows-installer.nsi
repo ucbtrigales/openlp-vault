@@ -37,13 +37,13 @@ Section "MainSection" SEC01
     CreateShortCut "$DESKTOP\OpenLP Vault.lnk" "$INSTDIR\openlp-vault-gui.exe"
 
     # Agregar carpeta de instalación al PATH para que la CLI funcione desde la línea de comandos
-    ReadRegStr $0 "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path"
+    ReadRegStr $0 HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path"
     ${If} $0 == ""
       StrCpy $0 "$INSTDIR"
     ${Else}
       StrCpy $0 "$0;$INSTDIR"
     ${EndIf}
-    WriteRegExpandStr "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path" $0
+    WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path" $0
     System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("Path", "$0")'
     
     # Desinstalador
