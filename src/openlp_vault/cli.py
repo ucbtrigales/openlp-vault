@@ -2,16 +2,20 @@ import logging
 from pathlib import Path
 import tempfile
 
+from .i18n import _, install_click_translations
+
 import click
 from . import __version__
 from .discovery import find_openlp_installation
 from .observability import setup_logging
 from .utils import format_drive_timestamp
 
+install_click_translations()
+
 
 @click.group()
 @click.version_option(version=__version__)
-@click.option("--debug", is_flag=True, default=False, help="Mostrar información de depuración")
+@click.option("--debug", is_flag=True, default=False, help=_("Show debugging information"))
 @click.pass_context
 def cli(ctx, debug):
     """OpenLP Vault CLI"""
@@ -19,130 +23,130 @@ def cli(ctx, debug):
     ctx.obj = {"debug": debug}
 
 
-@cli.command()
-@click.option("--debug", is_flag=True, default=False, help="Mostrar información de depuración")
-@click.option("--credentials", type=click.Path(exists=True, dir_okay=False), default=None, help="Ruta al JSON de credenciales de OAuth 2.0")
-@click.option("--token-path", type=click.Path(), default=None, help="Ruta donde guardar/leer el token OAuth")
+@cli.command(help=_("Authorize access to Google Drive and save the token locally."))
+@click.option("--debug", is_flag=True, default=False, help=_("Show debugging information"))
+@click.option("--credentials", type=click.Path(exists=True, dir_okay=False), default=None, help=_("Path to the OAuth 2.0 credentials JSON"))
+@click.option("--token-path", type=click.Path(), default=None, help=_("Path used to store/read the OAuth token"))
 def auth(debug, credentials, token_path):
     """Autoriza el acceso a Google Drive y guarda el token localmente."""
     if debug:
         setup_logging(logging.DEBUG)
 
-    click.echo("Iniciando autenticación con Google Drive...")
+    click.echo(_("Starting Google Drive authentication..."))
     from .auth import authenticate
 
     drive_service, creds = authenticate(client_secrets_file=credentials, token_path=token_path)
-    click.echo("Autenticación completada.")
-    click.echo(f"Token guardado en: {creds.token}")
+    click.echo(_("Authentication complete."))
+    click.echo(_("Token saved at: {token}").format(token=creds.token))
     if drive_service:
-        click.echo("Servicio de Drive listo para usar.")
+        click.echo(_("Drive service is ready."))
 
 
-@cli.command()
-@click.option("--debug", is_flag=True, default=False, help="Mostrar información de depuración")
-@click.option("--source", type=click.Path(exists=False, file_okay=False), default=None, help="Directorio local de OpenLP para respaldar")
-@click.option("--parent-folder-id", type=str, default=None, help="ID de carpeta en Google Drive donde subir el respaldo")
-@click.option("--folder-name", type=str, default="OpenLP Vault", help="Nombre de carpeta en Drive donde guardar el respaldo")
-@click.option("--no-upload", is_flag=True, default=False, help="Solo crear el respaldo local sin subirlo")
+@cli.command(help=_("Create a backup and upload it to Google Drive."))
+@click.option("--debug", is_flag=True, default=False, help=_("Show debugging information"))
+@click.option("--source", type=click.Path(exists=False, file_okay=False), default=None, help=_("Local OpenLP directory to back up"))
+@click.option("--parent-folder-id", type=str, default=None, help=_("Google Drive folder ID where the backup will be uploaded"))
+@click.option("--folder-name", type=str, default="OpenLP Vault", help=_("Drive folder name where the backup will be stored"))
+@click.option("--no-upload", is_flag=True, default=False, help=_("Only create the local backup without uploading it"))
 def backup(debug, source, parent_folder_id, folder_name, no_upload):
     """Crea un respaldo y lo sube a Google Drive"""
     if debug:
         setup_logging(logging.DEBUG)
 
-    click.echo("Iniciando respaldo...")
+    click.echo(_("Starting backup..."))
     if source is None:
         source = find_openlp_installation()
         if source is None:
-            click.echo("No se pudo encontrar la instalación de OpenLP. Usa --source o OPENLP_PATH.")
+            click.echo(_("Could not find the OpenLP installation. Use --source or OPENLP_PATH."))
             raise click.Abort()
-        click.echo(f"Origen detectado: {source}")
+        click.echo(_("Detected source: {source}").format(source=source))
 
     from .auth import authenticate
     from .backup import cleanup_backup_file, create_backup, upload_backup
 
     # always use temporary directory for ZIPs
     backup_path = create_backup(source)
-    click.echo(f"Archivo de respaldo creado: {backup_path}")
+    click.echo(_("Backup file created: {path}").format(path=backup_path))
 
     if no_upload:
-        click.echo("No se subirá el respaldo a Drive (--no-upload).")
+        click.echo(_("The backup will not be uploaded to Drive (--no-upload)."))
         return
 
-    click.echo("Autenticando con Google Drive...")
-    drive_service, _ = authenticate()
+    click.echo(_("Authenticating with Google Drive..."))
+    drive_service, _credentials = authenticate()
     metadata = upload_backup(backup_path, drive_service, parent_folder_id=parent_folder_id, folder_name=folder_name)
-    click.echo(f"Respaldo subido: {metadata.get('id')} ({metadata.get('name')})")
+    click.echo(_("Backup uploaded: {id} ({name})").format(id=metadata.get("id"), name=metadata.get("name")))
     cleanup_backup_file(backup_path)
 
 
-@cli.command()
-@click.option("--debug", is_flag=True, default=False, help="Mostrar información de depuración")
-@click.option("--backup-id", type=str, default=None, help="ID del respaldo en Drive a restaurar")
-@click.option("--destination", type=click.Path(file_okay=False), default=None, help="Directorio local donde restaurar OpenLP")
-@click.option("--list-only", is_flag=True, default=False, help="Solo listar respaldos disponibles y no restaurar")
+@cli.command(help=_("Restore the OpenLP installation from a backup."))
+@click.option("--debug", is_flag=True, default=False, help=_("Show debugging information"))
+@click.option("--backup-id", type=str, default=None, help=_("ID of the Drive backup to restore"))
+@click.option("--destination", type=click.Path(file_okay=False), default=None, help=_("Local directory where OpenLP will be restored"))
+@click.option("--list-only", is_flag=True, default=False, help=_("Only list available backups without restoring"))
 def restore(debug, backup_id, destination, list_only):
     """Restaura la instalación desde un respaldo"""
     if debug:
         setup_logging(logging.DEBUG)
 
-    click.echo("Iniciando restauración...")
+    click.echo(_("Starting restore..."))
     from .auth import authenticate
-    from .recovery import snapshot_local_state
+    from .backup import cleanup_backup_file
     from .restore import list_backups, download_backup, apply_backup
 
-    drive_service, _ = authenticate()
+    drive_service, _credentials = authenticate()
     backups = list_backups(drive_service)
     if not backups:
-        click.echo("No se encontraron respaldos en Drive.")
+        click.echo(_("No backups were found in Drive."))
         raise click.Abort()
 
     if list_only:
-        click.echo("Respaldos disponibles:")
+        click.echo(_("Available backups:"))
         for idx, backup in enumerate(backups, start=1):
             created = format_drive_timestamp(backup.get('createdTime', ''))
             click.echo(f"{idx}. {backup.get('name')} (id={backup.get('id')}) created={created} size={backup.get('size')}")
         return
         if choice < 1 or choice > len(backups):
-            click.echo("Selección inválida.")
+            click.echo(_("Invalid selection."))
             raise click.Abort()
         backup_id = backups[choice - 1]["id"]
 
     if destination is None:
         destination = find_openlp_installation()
         if destination is None:
-            destination = click.prompt("Ruta local de OpenLP para restaurar", type=click.Path(file_okay=False))
-    click.echo(f"Ruta de restauración: {destination}")
+            destination = click.prompt(_("Local OpenLP path to restore"), type=click.Path(file_okay=False))
+    click.echo(_("Restore path: {destination}").format(destination=destination))
 
     # snapshot_dir option removed; snapshots are no longer supported in CLI
 
     download_dir = Path(tempfile.mkdtemp(prefix="openlp_restore_"))
     archive_path = download_dir / f"{backup_id}.zip"
-    click.echo(f"Descargando respaldo {backup_id}...")
+    click.echo(_("Downloading backup {id}...").format(id=backup_id))
     download_backup(backup_id, drive_service, archive_path)
 
-    click.echo("Aplicando respaldo...")
+    click.echo(_("Applying backup..."))
     apply_backup(archive_path, destination)
     cleanup_backup_file(archive_path)
-    click.echo("Restauración completada.")
+    click.echo(_("Restore complete."))
 
 
-@cli.command()
-@click.option("--debug", is_flag=True, default=False, help="Mostrar información de depuración")
-@click.option("--backup-id", type=str, default=None, help="ID del respaldo en Drive a eliminar")
-@click.option("--force", is_flag=True, default=False, help="Eliminar sin pedir confirmación")
+@cli.command(help=_("Delete a backup stored in Drive."))
+@click.option("--debug", is_flag=True, default=False, help=_("Show debugging information"))
+@click.option("--backup-id", type=str, default=None, help=_("ID of the Drive backup to delete"))
+@click.option("--force", is_flag=True, default=False, help=_("Delete without confirmation"))
 def delete(debug, backup_id, force):
     """Elimina un respaldo almacenado en Drive"""
     if debug:
         setup_logging(logging.DEBUG)
 
-    click.echo("Iniciando eliminación de respaldo...")
+    click.echo(_("Starting backup deletion..."))
     from .auth import authenticate
     from .restore import list_backups, delete_backup
 
-    drive_service, _ = authenticate()
+    drive_service, _credentials = authenticate()
     backups = list_backups(drive_service)
     if not backups:
-        click.echo("No se encontraron respaldos en Drive.")
+        click.echo(_("No backups were found in Drive."))
         raise click.Abort()
 
     selected = None
@@ -152,27 +156,27 @@ def delete(debug, backup_id, force):
                 selected = backup
                 break
         if selected is None:
-            click.echo(f"No se encontró un respaldo con ID {backup_id}.")
+            click.echo(_("No backup with ID {id} was found.").format(id=backup_id))
             raise click.Abort()
     else:
-        click.echo("Respaldos disponibles:")
+        click.echo(_("Available backups:"))
         for idx, backup in enumerate(backups, start=1):
             click.echo(f"{idx}. {backup.get('name')} (id={backup.get('id')}) created={backup.get('createdTime')} size={backup.get('size')}")
-        choice = click.prompt("Seleccione el número del respaldo a eliminar", type=int)
+        choice = click.prompt(_("Select the number of the backup to delete"), type=int)
         if choice < 1 or choice > len(backups):
-            click.echo("Selección inválida.")
+            click.echo(_("Invalid selection."))
             raise click.Abort()
         selected = backups[choice - 1]
         backup_id = selected["id"]
 
     backup_name = selected.get("name")
     if not force:
-        if not click.confirm(f"¿Eliminar '{backup_name}' (id={backup_id})? Esta acción no se puede deshacer.", default=False):
-            click.echo("Operación cancelada.")
+        if not click.confirm(_("Delete '{name}' (id={id})? This action cannot be undone.").format(name=backup_name, id=backup_id), default=False):
+            click.echo(_("Operation cancelled."))
             return
 
     delete_backup(backup_id, drive_service)
-    click.echo(f"Respaldo eliminado: {backup_name} (id={backup_id})")
+    click.echo(_("Backup deleted: {name} (id={id})").format(name=backup_name, id=backup_id))
 
 
 if __name__ == "__main__":

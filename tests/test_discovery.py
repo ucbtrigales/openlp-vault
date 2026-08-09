@@ -1,19 +1,26 @@
 from pathlib import Path
 
-from openlp_vault.discovery import _is_openlp_installation, find_openlp_installation
+import pytest
+
+from openlp_vault.discovery import (
+    COMMON_MARKERS,
+    _is_openlp_installation,
+    find_openlp_installation,
+)
 
 
-def test_is_openlp_installation(tmp_path: Path):
+@pytest.mark.parametrize("marker", COMMON_MARKERS)
+def test_is_openlp_installation_with_any_common_marker(tmp_path: Path, marker: str):
     root = tmp_path / "openlp"
     root.mkdir()
-    (root / "openlp.conf").write_text("config")
+    (root / marker).mkdir()
     assert _is_openlp_installation(root)
 
 
 def test_find_openlp_installation_env(tmp_path: Path, monkeypatch):
     root = tmp_path / "openlp"
     root.mkdir()
-    (root / "openlp.conf").write_text("config")
+    (root / COMMON_MARKERS[0]).mkdir()
     monkeypatch.setenv("OPENLP_PATH", str(root))
     found = find_openlp_installation()
     assert found == root
