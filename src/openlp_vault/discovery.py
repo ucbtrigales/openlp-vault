@@ -14,6 +14,7 @@ DEFAULT_LINUX_PATHS = [
 DEFAULT_MAC_PATHS = [
     Path.home() / "Library" / "Application Support" / "openlp" / "Data",
     Path.home() / "Library" / "Application Support" / "openlp" / "data",
+    Path.home() / "Library" / "Application Support" / "openlp",
 ]
 DEFAULT_WINDOWS_PATHS = [
     Path(os.getenv("LOCALAPPDATA", "")) / "openlp" / "data",
