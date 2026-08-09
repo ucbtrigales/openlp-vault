@@ -26,6 +26,8 @@ img { display: block; max-width: 100%; }
 .nav-links { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
 .nav-links a { color: var(--muted); text-decoration: none; }
 .nav-links a:hover, .nav-links a:focus { color: var(--link); }
+.language { display: inline-flex; align-items: center; gap: 6px; }
+.language span { font-size: 1.15em; line-height: 1; }
 
 main > section { padding: 42px 0; }
 main > section + section { border-top: 1px solid var(--line); }
