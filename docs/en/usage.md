@@ -2,31 +2,10 @@
 
 English | [Español](../es/usage.md)
 
-## Development installation
-
-```bash
-python -m pip install -r requirements.txt
-python -m pip install -e .
-```
-
-You can also run `./setup.sh`, which creates `.venv`, installs
-dependencies, and installs the package in editable mode.
-
-## Legal and project information
-
-The CLI help includes a short license reference. Display copyright, license,
-maintenance, contact, and project URL with:
-
-```bash
-openlp-vault license
-```
-
-In the GUI, click the underlined `OpenLP Vault VERSION` text in Settings to
-open **About OpenLP Vault**. The dialog links to the maintainer email and
-<https://ucbtrigales.github.io/openlp-vault/>, and provides scrollable views
-of `LICENSE` and `NOTICE`.
-
 ## Desktop interface
+
+Create Google Drive credentials by following the
+[Google Drive setup guide](drive_setup.md).
 
 Launch the application with:
 
@@ -177,3 +156,29 @@ openlp-vault delete --backup-id BACKUP_ID --force
 ```
 
 Deletion from Google Drive cannot be undone through OpenLP Vault.
+
+## Development installation
+
+OpenLP Vault requires Python 3.10 or later:
+
+```bash
+python -m pip install -r requirements.txt
+python -m pip install -e .
+```
+
+You can also run `./setup.sh`, which creates `.venv`, installs
+dependencies, and installs the package in editable mode.
+
+## Legal and project information
+
+The CLI help includes a short license reference. Display copyright, license,
+maintenance, contact, and project URL with:
+
+```bash
+openlp-vault license
+```
+
+In the GUI, click the underlined `OpenLP Vault VERSION` text in Settings to
+open **About OpenLP Vault**. The dialog links to the maintainer email and
+<https://ucbtrigales.github.io/openlp-vault/>, and provides scrollable views
+of `LICENSE` and `NOTICE`.
