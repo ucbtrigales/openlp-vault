@@ -21,7 +21,7 @@ Repositorio: <https://github.com/ucbtrigales/openlp-vault>
 
 ## Instalación para desarrollo
 
-OpenLP Vault requiere Python 3.8 o posterior:
+OpenLP Vault requiere Python 3.10 o posterior:
 
 ```bash
 python -m pip install -r requirements.txt

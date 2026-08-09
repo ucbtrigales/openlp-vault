@@ -3,7 +3,7 @@ name = "openlp_vault"
 version = "0.1.0"
 description = "Sincronización de respaldos de OpenLP usando Google Drive"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 authors = [
     { name = "Christian González G.", email = "christian.gonzalez@ucbtrigales.org" },
 ]
