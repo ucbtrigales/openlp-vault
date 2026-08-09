@@ -1,6 +1,12 @@
 $root = Resolve-Path "$PSScriptRoot\.."
 Set-Location $root
 
+$projectMetadata = Get-Content "pyproject.toml" -Raw
+if ($projectMetadata -notmatch '(?m)^version\s*=\s*"([^"]+)"') {
+    throw "Error: no se pudo obtener la versión desde pyproject.toml."
+}
+$version = $Matches[1]
+
 # 1. Limpiar construcciones previas
 Remove-Item -Recurse -Force build, dist -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Path dist -Force
@@ -16,7 +22,7 @@ $pyInstallerConsoleArgs = @(
     "--collect-data", "openlp_vault",
     "--add-data", "LICENSE:.",
     "--add-data", "NOTICE:.",
-    "src/openlp_vault/__main__.py"
+    "packaging/openlp_vault_cli_launcher.py"
 )
 
 $pyInstallerGuiArgs = @(
@@ -46,6 +52,12 @@ $pyInstallerGuiArgs = @(
 py -m PyInstaller $pyInstallerConsoleArgs
 py -m PyInstaller $pyInstallerGuiArgs
 
+# Comprobar que la CLI congelada puede iniciarse antes de empaquetarla.
+& "dist\openlp-vault.exe" --version
+if ($LASTEXITCODE -ne 0) {
+    throw "Error: la CLI compilada no pudo ejecutarse."
+}
+
 # 3. Localizar makensis (NSIS) de forma segura
 $makensisCmd = Get-Command makensis -ErrorAction SilentlyContinue
 
@@ -60,8 +72,13 @@ if ($makensisCmd) {
 }
 
 # 4. Crear el instalador unificado con NSIS
-& $makensis "$root\packaging\windows-installer.nsi"
+& $makensis "/DPRODUCT_VERSION=$version" "$root\packaging\windows-installer.nsi"
+if ($LASTEXITCODE -ne 0) {
+    throw "Error: NSIS no pudo crear el instalador."
+}
 
 # 5. Eliminar los .exe individuales sueltos de dist/ para dejar solo el instalador Setup
 Remove-Item "dist\openlp-vault.exe" -Force
 Remove-Item "dist\openlp-vault-gui.exe" -Force
+
+Write-Host "Instalador creado: dist\OpenLPVault-Setup-v$version.exe"

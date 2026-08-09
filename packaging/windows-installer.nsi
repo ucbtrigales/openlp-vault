@@ -1,7 +1,9 @@
 !define PRODUCT_NAME "OpenLP Vault"
-!define PRODUCT_VERSION "0.1.0"
+!ifndef PRODUCT_VERSION
+!define PRODUCT_VERSION "0.0.0"
+!endif
 !define PRODUCT_PUBLISHER "UCB Trigales"
-!define OUT_FILE "dist\OpenLPVault-Setup-v0.1.0.exe"
+!define OUT_FILE "dist\OpenLPVault-Setup-v${PRODUCT_VERSION}.exe"
 
 OutFile "${OUT_FILE}"
 InstallDir "$PROGRAMFILES64\OpenLP Vault"
@@ -18,7 +20,6 @@ UninstPage uninstConfirm
 UninstPage instfiles
 
 Section "MainSection" SEC01
-    SetOutPath "$WORKDIR"
     SetOutPath "$INSTDIR"
     
     # Incluye AMBOS archivos compilados en el instalador final
@@ -27,9 +28,6 @@ Section "MainSection" SEC01
     File "LICENSE"
     File "NOTICE"
     
-    # Si tienes un icono para el ejecutable o instalador:
-    # File "packaging\openlp-vault.ico"
-
     # Accesos directos (Apuntando a la versión GUI como principal)
     CreateDirectory "$SMPROGRAMS\OpenLP Vault"
     CreateShortCut "$SMPROGRAMS\OpenLP Vault\OpenLP Vault.lnk" "$INSTDIR\openlp-vault-gui.exe"

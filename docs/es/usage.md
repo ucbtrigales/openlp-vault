@@ -157,6 +157,27 @@ openlp-vault delete --backup-id ID_DEL_RESPALDO --force
 
 La eliminación en Google Drive no se puede deshacer desde OpenLP Vault.
 
+## Aplicaciones empaquetadas
+
+Cada paquete para una plataforma contiene la interfaz gráfica y la CLI:
+
+- **Windows:** instala `OpenLPVault-Setup-vVERSIÓN.exe`. Usa el menú Inicio o
+  el acceso directo del escritorio para la GUI, y ejecuta `openlp-vault` desde
+  una terminal nueva para utilizar la CLI.
+- **Linux:** ejecuta `OpenLPVault-VERSIÓN-x86_64.AppImage` para abrir la GUI.
+  Añade `--cli` antes de los argumentos de la CLI, por ejemplo:
+
+  ```bash
+  ./OpenLPVault-VERSIÓN-x86_64.AppImage --cli --help
+  ```
+
+- **macOS:** copia `OpenLP Vault.app` desde el DMG a Aplicaciones. La GUI es la
+  aplicación normal y la CLI incluida está disponible en:
+
+  ```bash
+  "/Applications/OpenLP Vault.app/Contents/MacOS/openlp-vault" --help
+  ```
+
 ## Instalación para desarrollo
 
 OpenLP Vault requiere Python 3.10 o posterior:

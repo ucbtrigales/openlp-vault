@@ -5,8 +5,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$REPO_ROOT"
 
+PROJECT_VERSION="$(sed -n 's/^version[[:space:]]*=[[:space:]]*"\([^"]*\)"/\1/p' pyproject.toml | head -n 1)"
+if [ -z "$PROJECT_VERSION" ]; then
+  echo "Error: no se pudo obtener la versión desde pyproject.toml." >&2
+  exit 1
+fi
+APPIMAGE_NAME="OpenLPVault-${PROJECT_VERSION}-x86_64.AppImage"
+
 # 1. Limpieza inicial
-rm -rf build dist AppDir OpenLPVault-x86_64.AppImage appimagetool.AppImage
+rm -rf build dist AppDir appimagetool.AppImage
 
 # 2. Compilaciones con PyInstaller (Usando PYTHONPATH=src para resolver las importaciones del paquete)
 PYTHONPATH=src python -m PyInstaller --clean --onefile --console \
@@ -16,7 +23,7 @@ PYTHONPATH=src python -m PyInstaller --clean --onefile --console \
   --collect-submodules openlp_vault \
   --add-data "LICENSE:." \
   --add-data "NOTICE:." \
-  src/openlp_vault/__main__.py
+  packaging/openlp_vault_cli_launcher.py
 
 PYTHONPATH=src python -m PyInstaller --clean --onefile --windowed \
   --name openlp-vault-gui \
@@ -37,6 +44,9 @@ PYTHONPATH=src python -m PyInstaller --clean --onefile --windowed \
   --hidden-import openlp_vault.utils \
   --hidden-import openlp_vault.versioning \
   packaging/openlp_vault_gui_launcher.py
+
+# Comprobar la CLI congelada antes de crear el AppImage.
+dist/openlp-vault --version
 
 # 3. Preparación del directorio AppDir
 mkdir -p AppDir/usr/bin
@@ -68,12 +78,13 @@ exec "$HERE/usr/bin/openlp-vault-gui" "$@"
 EOF
 chmod +x AppDir/AppRun
 
-# 5. Crear archivo .desktop (Exec=openlp-vault-gui)
+# 5. Crear archivo .desktop para la GUI. AppRun ofrece la CLI con --cli.
 cat > AppDir/openlp-vault.desktop <<'EOF'
 [Desktop Entry]
 Type=Application
 Name=OpenLP Vault
 Exec=openlp-vault-gui
+TryExec=openlp-vault-gui
 Icon=openlp-vault
 Categories=Utility;
 Terminal=false
@@ -84,4 +95,9 @@ curl -L -o appimagetool.AppImage https://github.com/AppImage/AppImageKit/release
 chmod +x appimagetool.AppImage
 
 mkdir -p dist
-./appimagetool.AppImage AppDir dist/OpenLPVault-x86_64.AppImage
+ARCH=x86_64 ./appimagetool.AppImage AppDir "dist/$APPIMAGE_NAME"
+
+# El mismo AppImage abre la GUI por defecto y expone la CLI mediante --cli.
+"dist/$APPIMAGE_NAME" --appimage-extract-and-run --cli --version
+
+echo "AppImage creado: dist/$APPIMAGE_NAME"

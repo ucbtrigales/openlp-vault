@@ -157,6 +157,27 @@ openlp-vault delete --backup-id BACKUP_ID --force
 
 Deletion from Google Drive cannot be undone through OpenLP Vault.
 
+## Packaged applications
+
+Every platform package contains both the desktop interface and the CLI:
+
+- **Windows:** install `OpenLPVault-Setup-vVERSION.exe`. Use the Start menu or
+  desktop shortcut for the GUI, and run `openlp-vault` from a new terminal for
+  the CLI.
+- **Linux:** run `OpenLPVault-VERSION-x86_64.AppImage` for the GUI. Add
+  `--cli` before the CLI arguments, for example:
+
+  ```bash
+  ./OpenLPVault-VERSION-x86_64.AppImage --cli --help
+  ```
+
+- **macOS:** copy `OpenLP Vault.app` from the DMG to Applications. The GUI is
+  the normal application, and the bundled CLI is available at:
+
+  ```bash
+  "/Applications/OpenLP Vault.app/Contents/MacOS/openlp-vault" --help
+  ```
+
 ## Development installation
 
 OpenLP Vault requires Python 3.10 or later:
