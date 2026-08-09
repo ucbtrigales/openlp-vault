@@ -19,6 +19,40 @@ Repository: <https://github.com/ucbtrigales/openlp-vault>
 - SHA-256 integrity and versioning utilities.
 - Packaging for Windows, macOS, and Linux AppImage.
 
+## Quick start with the GUI
+
+Create Google Drive credentials by following the
+[Google Drive setup guide](docs/en/drive_setup.md).
+
+Then launch the desktop interface:
+
+```bash
+openlp-vault-gui
+```
+
+![OpenLP Vault main window](docs/assets/screenshots/en/main-window.png)
+
+On first launch, the GUI opens Settings when no reusable OAuth authorization
+exists. Select `credentials.json`, the OpenLP data directory, and the Google
+Drive folder name.
+
+## Command-line interface
+
+After creating `credentials.json` with the
+[Google Drive setup guide](docs/en/drive_setup.md), authorize the application
+and run the required operation:
+
+```bash
+openlp-vault auth --credentials credentials.json
+openlp-vault backup
+openlp-vault restore --list-only
+openlp-vault restore --backup-id BACKUP_ID
+openlp-vault delete --backup-id BACKUP_ID
+```
+
+See the [usage guide](docs/en/usage.md) for all options and
+[architecture](docs/en/architecture.md) for an overview of the codebase.
+
 ## Development installation
 
 OpenLP Vault requires Python 3.10 or later:
@@ -34,34 +68,6 @@ Alternatively, use the setup script:
 ./setup.sh
 source .venv/bin/activate
 ```
-
-## Quick start
-
-Create Google Drive credentials by following the
-[Google Drive setup guide](docs/en/drive_setup.md).
-
-```bash
-openlp-vault auth --credentials credentials.json
-openlp-vault backup
-openlp-vault restore --list-only
-openlp-vault restore --backup-id BACKUP_ID
-openlp-vault delete --backup-id BACKUP_ID
-```
-
-Launch the desktop interface with:
-
-```bash
-openlp-vault-gui
-```
-
-![OpenLP Vault main window](docs/assets/screenshots/en/main-window.png)
-
-On first launch, the GUI opens Settings when no reusable OAuth authorization
-exists. Select `credentials.json`, the OpenLP data directory, and the Google
-Drive folder name.
-
-See the [usage guide](docs/en/usage.md) for all options and
-[architecture](docs/en/architecture.md) for an overview of the codebase.
 
 ## License
 
