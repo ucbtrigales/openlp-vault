@@ -55,16 +55,5 @@ On first launch, the GUI opens Settings when no reusable OAuth authorization
 exists. Select `credentials.json`, the OpenLP data directory, and the Google
 Drive folder name.
 
-## Language
-
-OpenLP Vault checks `LC_ALL`, `LC_MESSAGES`, and `LANG`, in that order.
-It supports English and Spanish and falls back to English for unsupported
-locales.
-
-```bash
-LANG=es_CL.UTF-8 openlp-vault --help
-LANG=en_US.UTF-8 openlp-vault-gui
-```
-
 See the [usage guide](docs/en/usage.md) for all options and
 [architecture](docs/en/architecture.md) for an overview of the codebase.
