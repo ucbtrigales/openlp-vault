@@ -14,6 +14,8 @@ $pyInstallerConsoleArgs = @(
     "--paths", "src",
     "--collect-submodules", "openlp_vault",
     "--collect-data", "openlp_vault",
+    "--add-data", "LICENSE:.",
+    "--add-data", "NOTICE:.",
     "src/openlp_vault/__main__.py"
 )
 
@@ -25,6 +27,8 @@ $pyInstallerGuiArgs = @(
     "--paths", "src",
     "--collect-submodules", "openlp_vault",
     "--collect-data", "openlp_vault",
+    "--add-data", "LICENSE:.",
+    "--add-data", "NOTICE:.",
     "--hidden-import", "openlp_vault.backup",
     "--hidden-import", "openlp_vault.auth",
     "--hidden-import", "openlp_vault.config",

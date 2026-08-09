@@ -7,20 +7,56 @@ from .i18n import _, install_click_translations
 import click
 from . import __version__
 from .discovery import find_openlp_installation
+from .legal import (
+    CONTACT_EMAIL,
+    COPYRIGHT_NOTICE,
+    MAINTAINING_COMMUNITY,
+    PROJECT_URL,
+)
 from .observability import setup_logging
 from .utils import format_drive_timestamp
 
 install_click_translations()
 
 
-@click.group()
-@click.version_option(version=__version__)
+@click.group(
+    epilog=_(
+        "License: GPL-3.0-or-later. Run 'openlp-vault license' for details."
+    )
+)
+@click.version_option(version=__version__, message="OpenLP Vault %(version)s")
 @click.option("--debug", is_flag=True, default=False, help=_("Show debugging information"))
 @click.pass_context
 def cli(ctx, debug):
     """OpenLP Vault CLI"""
     setup_logging(logging.DEBUG if debug else logging.INFO)
     ctx.obj = {"debug": debug}
+
+
+@cli.command("license", help=_("Show copyright, license, and project information."))
+def license_info():
+    """Show the project's legal and maintenance information."""
+    click.echo(f"OpenLP Vault {__version__}\n")
+    click.echo(COPYRIGHT_NOTICE)
+    click.echo(_("Contact: {email}").format(email=CONTACT_EMAIL))
+    click.echo()
+    click.echo(
+        _(
+            "Licensed under the GNU General Public License, version 3 or later "
+            "(GPL-3.0-or-later)."
+        )
+    )
+    click.echo()
+    click.echo(
+        _("Maintained by the community of {community}.").format(
+            community=MAINTAINING_COMMUNITY
+        )
+    )
+    click.echo(_("The church is not the copyright holder."))
+    click.echo()
+    click.echo(_("Contributors retain copyright in their contributions."))
+    click.echo(_("See LICENSE and NOTICE for details."))
+    click.echo(_("Project: {url}").format(url=PROJECT_URL))
 
 
 @cli.command(help=_("Authorize access to Google Drive and save the token locally."))

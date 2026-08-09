@@ -32,6 +32,20 @@ LANG=en_US.UTF-8 openlp-vault-gui
 
 There is no language selector in the GUI or dedicated language option.
 
+## Legal and project information
+
+The CLI help includes a short license reference. Display copyright, license,
+maintenance, contact, and project URL with:
+
+```bash
+openlp-vault license
+```
+
+In the GUI, click the underlined `OpenLP Vault VERSION` text in Settings to
+open **About OpenLP Vault**. The dialog links to the maintainer email and
+<https://github.com/ucbtrigales/openlp-vault>, and provides scrollable views
+of `LICENSE` and `NOTICE`.
+
 ## Desktop interface
 
 Launch the application with:

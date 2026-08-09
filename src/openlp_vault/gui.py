@@ -21,6 +21,13 @@ from .backup import cleanup_backup_file, create_backup, upload_backup
 from .config import load_config, save_config
 from . import __version__
 from .discovery import find_openlp_installation
+from .legal import (
+    CONTACT_EMAIL,
+    COPYRIGHT_NOTICE,
+    MAINTAINING_COMMUNITY,
+    PROJECT_URL,
+    read_legal_document,
+)
 from .restore import apply_backup, delete_backup, download_backup, list_backups
 from .utils import format_drive_timestamp
 from .i18n import _, detect_language, ngettext
@@ -793,6 +800,152 @@ class OpenLPVaultGUI(tk.Tk):
             if not silent:
                 self._append_log(_("Not authenticated yet, or backups could not be listed."))
 
+    def _show_legal_document(self, name, title, parent):
+        try:
+            content = read_legal_document(name)
+        except (OSError, ValueError) as exc:
+            messagebox.showerror(
+                _("Error"),
+                _("Could not open {name}: {error}").format(name=name, error=exc),
+                parent=parent,
+            )
+            return
+
+        viewer = tk.Toplevel(parent)
+        viewer.title(title)
+        viewer.geometry("780x560")
+        viewer.minsize(560, 360)
+        viewer.transient(parent)
+
+        frame = ttk.Frame(viewer, padding=12)
+        frame.pack(fill="both", expand=True)
+        text_frame = ttk.Frame(frame)
+        text_frame.pack(fill="both", expand=True)
+        scrollbar = ttk.Scrollbar(text_frame, orient="vertical")
+        scrollbar.pack(side="right", fill="y")
+        text = tk.Text(
+            text_frame,
+            wrap="word",
+            state="normal",
+            yscrollcommand=scrollbar.set,
+            padx=8,
+            pady=8,
+        )
+        text.insert("1.0", content)
+        text.configure(state="disabled")
+        text.pack(side="left", fill="both", expand=True)
+        scrollbar.configure(command=text.yview)
+        ttk.Button(frame, text=_("Close"), command=viewer.destroy, width=14).pack(
+            anchor="e", pady=(10, 0)
+        )
+
+    def _open_about_dialog(self, parent=None):
+        owner = parent or self
+        existing_dialog = getattr(self, "_about_dialog", None)
+        if existing_dialog is not None and existing_dialog.winfo_exists():
+            existing_dialog.deiconify()
+            existing_dialog.lift()
+            existing_dialog.focus_set()
+            return
+
+        dialog = tk.Toplevel(owner)
+        self._about_dialog = dialog
+        dialog.bind(
+            "<Destroy>",
+            lambda event: setattr(self, "_about_dialog", None)
+            if event.widget is dialog
+            else None,
+        )
+        dialog.title(_("About OpenLP Vault"))
+        dialog.geometry("620x410")
+        dialog.resizable(True, True)
+        dialog.transient(owner)
+
+        frame = ttk.Frame(dialog, padding=18)
+        frame.pack(fill="both", expand=True)
+        ttk.Label(
+            frame, text=f"OpenLP Vault {__version__}", font=("TkDefaultFont", 16, "bold")
+        ).pack(anchor="w", pady=(0, 12))
+        ttk.Label(frame, text=COPYRIGHT_NOTICE).pack(anchor="w")
+
+        background = ttk.Style().lookup("TFrame", "background") or self.cget("background")
+        email_label = tk.Label(
+            frame,
+            text=CONTACT_EMAIL,
+            foreground="#0563c1",
+            background=background,
+            cursor="hand2",
+            font=("TkDefaultFont", 10, "underline"),
+        )
+        email_label.pack(anchor="w", pady=(2, 12))
+        email_label.bind(
+            "<Button-1>",
+            lambda _event: webbrowser.open(f"mailto:{CONTACT_EMAIL}"),
+        )
+
+        ttk.Label(
+            frame,
+            text=_(
+                "Free software licensed under GNU GPL version 3 or later "
+                "(GPL-3.0-or-later)."
+            ),
+            wraplength=580,
+            justify="left",
+        ).pack(anchor="w", pady=(0, 10))
+        ttk.Label(
+            frame,
+            text=_("Maintained by the community of {community}.").format(
+                community=MAINTAINING_COMMUNITY
+            ),
+            wraplength=580,
+            justify="left",
+        ).pack(anchor="w")
+        ttk.Label(
+            frame,
+            text=_("The church is not the copyright holder."),
+        ).pack(anchor="w")
+        ttk.Label(
+            frame,
+            text=_("Contributors retain copyright in their contributions."),
+            wraplength=580,
+            justify="left",
+        ).pack(anchor="w", pady=(0, 10))
+
+        project_label = tk.Label(
+            frame,
+            text=PROJECT_URL,
+            foreground="#0563c1",
+            background=background,
+            cursor="hand2",
+            font=("TkDefaultFont", 10, "underline"),
+        )
+        project_label.pack(anchor="w", pady=(0, 14))
+        project_label.bind(
+            "<Button-1>", lambda _event: webbrowser.open_new_tab(PROJECT_URL)
+        )
+
+        buttons = ttk.Frame(frame)
+        buttons.pack(side="bottom", fill="x")
+        ttk.Button(
+            buttons,
+            text=_("View license"),
+            command=lambda: self._show_legal_document(
+                "LICENSE", _("GNU General Public License"), dialog
+            ),
+        ).pack(side="left")
+        ttk.Button(
+            buttons,
+            text=_("View legal notice"),
+            command=lambda: self._show_legal_document(
+                "NOTICE", _("Legal notice"), dialog
+            ),
+        ).pack(side="left", padx=(8, 0))
+        ttk.Button(
+            buttons, text=_("Close"), command=dialog.destroy, width=14
+        ).pack(side="right")
+
+        dialog.focus_set()
+
     def _open_configuration(self, first_run=False):
         existing_dialog = getattr(self, "_configuration_dialog", None)
         if existing_dialog is not None and existing_dialog.winfo_exists():
@@ -935,11 +1088,18 @@ class OpenLPVaultGUI(tk.Tk):
         button_frame = ttk.Frame(frame)
         button_frame.pack(fill="x", pady=(0, 4))
         button_frame.columnconfigure(1, weight=1)
-        ttk.Label(
+        about_label = tk.Label(
             button_frame,
             text=f"OpenLP Vault {__version__}",
-            style="Footer.TLabel",
-        ).grid(row=0, column=0, sticky="w")
+            foreground="#0563c1",
+            background=frame_background,
+            cursor="hand2",
+            font=("TkDefaultFont", 9, "underline"),
+        )
+        about_label.grid(row=0, column=0, sticky="w")
+        about_label.bind(
+            "<Button-1>", lambda _event: self._open_about_dialog(dialog)
+        )
         save_button = ttk.Button(
             button_frame,
             text=_("OK"),

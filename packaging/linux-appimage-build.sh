@@ -14,6 +14,8 @@ PYTHONPATH=src python -m PyInstaller --clean --onefile --console \
   --paths src \
   --collect-all openlp_vault \
   --collect-submodules openlp_vault \
+  --add-data "LICENSE:." \
+  --add-data "NOTICE:." \
   src/openlp_vault/__main__.py
 
 PYTHONPATH=src python -m PyInstaller --clean --onefile --windowed \
@@ -21,6 +23,8 @@ PYTHONPATH=src python -m PyInstaller --clean --onefile --windowed \
   --paths src \
   --collect-all openlp_vault \
   --collect-submodules openlp_vault \
+  --add-data "LICENSE:." \
+  --add-data "NOTICE:." \
   --hidden-import openlp_vault.backup \
   --hidden-import openlp_vault.auth \
   --hidden-import openlp_vault.config \
@@ -36,11 +40,14 @@ PYTHONPATH=src python -m PyInstaller --clean --onefile --windowed \
 # 3. Preparación del directorio AppDir
 mkdir -p AppDir/usr/bin
 mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+mkdir -p AppDir/usr/share/doc/openlp-vault
 
 cp dist/openlp-vault AppDir/usr/bin/
 cp dist/openlp-vault-gui AppDir/usr/bin/
 chmod +x AppDir/usr/bin/openlp-vault
 chmod +x AppDir/usr/bin/openlp-vault-gui
+cp LICENSE AppDir/usr/share/doc/openlp-vault/LICENSE
+cp NOTICE AppDir/usr/share/doc/openlp-vault/NOTICE
 
 # Copia de iconos
 if [ -f "packaging/openlp-vault.png" ]; then

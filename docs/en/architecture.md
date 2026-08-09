@@ -11,6 +11,8 @@ and restore modules.
 - `gui` — Tkinter desktop interface.
 - `cli` — Click commands: `auth`, `backup`, `restore`, and `delete`.
 - `i18n` — Locale detection and `gettext` catalog loading.
+- `legal` — Project identity and legal-document discovery in source, wheels,
+  and frozen executables.
 - `config` — GUI preferences in `~/.openlp-vault/config.json`.
 - `discovery` — OpenLP data-directory discovery.
 - `auth` — Google Drive OAuth and token persistence.

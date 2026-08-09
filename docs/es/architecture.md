@@ -11,6 +11,8 @@ autenticación, respaldo y restauración.
 - `gui` — Interfaz de escritorio construida con Tkinter.
 - `cli` — Comandos `auth`, `backup`, `restore` y `delete` con Click.
 - `i18n` — Detección del idioma y carga de catálogos con `gettext`.
+- `legal` — Identidad del proyecto y localización de documentos legales en
+  el código fuente, wheels y ejecutables congelados.
 - `config` — Preferencias de la GUI en `~/.openlp-vault/config.json`.
 - `discovery` — Localización del directorio de datos de OpenLP.
 - `auth` — OAuth de Google Drive y persistencia del token.

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenLP Vault\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-08 21:33-0400\n"
+"POT-Creation-Date: 2026-08-08 22:19-0400\n"
 "PO-Revision-Date: 2026-08-08 19:05-0400\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,52 +17,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/openlp_vault/i18n.py:52
+#: src/openlp_vault/i18n.py:73
 msgid "Usage:"
 msgstr "Uso:"
 
-#: src/openlp_vault/i18n.py:53
+#: src/openlp_vault/i18n.py:74
 msgid "Options"
 msgstr "Opciones"
 
-#: src/openlp_vault/i18n.py:54
+#: src/openlp_vault/i18n.py:75
 msgid "Commands"
 msgstr "Comandos"
 
-#: src/openlp_vault/i18n.py:55
+#: src/openlp_vault/i18n.py:76
 msgid "Show the version and exit."
 msgstr "Muestra la versión y finaliza."
 
-#: src/openlp_vault/i18n.py:56
+#: src/openlp_vault/i18n.py:77
 msgid "Show this message and exit."
 msgstr "Muestra este mensaje y finaliza."
 
-#: src/openlp_vault/i18n.py:57
+#: src/openlp_vault/i18n.py:78
 #, fuzzy, python-brace-format
 msgid "Error: {message}"
 msgstr "Error: {error}"
 
-#: src/openlp_vault/gui.py:83
+#: src/openlp_vault/gui.py:90
 msgid "Select an existing credentials.json file."
 msgstr "Selecciona un archivo credentials.json existente."
 
-#: src/openlp_vault/gui.py:87
+#: src/openlp_vault/gui.py:94
 msgid "The credentials file does not contain valid JSON."
 msgstr "El archivo de credenciales no contiene JSON válido."
 
-#: src/openlp_vault/gui.py:91
+#: src/openlp_vault/gui.py:98
 msgid "The file does not contain valid OAuth credentials."
 msgstr "El archivo no contiene credenciales OAuth válidas."
 
-#: src/openlp_vault/gui.py:95
+#: src/openlp_vault/gui.py:102
 msgid "Select an existing OpenLP data directory."
 msgstr "Selecciona un directorio de datos de OpenLP existente."
 
-#: src/openlp_vault/gui.py:99
+#: src/openlp_vault/gui.py:106
 msgid "Enter a name for the Google Drive folder."
 msgstr "Indica un nombre para la carpeta de Google Drive."
 
-#: src/openlp_vault/gui.py:113
+#: src/openlp_vault/gui.py:120
 #, python-brace-format
 msgid ""
 "Google Drive is connected.\n"
@@ -71,19 +71,19 @@ msgstr ""
 "Google Drive está conectado.\n"
 "Cuenta: {email}"
 
-#: src/openlp_vault/gui.py:116
+#: src/openlp_vault/gui.py:123
 msgid "Google Drive is already connected."
 msgstr "Google Drive ya está conectado."
 
-#: src/openlp_vault/gui.py:131
+#: src/openlp_vault/gui.py:138
 msgid "Incomplete configuration"
 msgstr "Configuración incompleta"
 
-#: src/openlp_vault/gui.py:151
+#: src/openlp_vault/gui.py:158
 msgid "❌  Cancel connection"
 msgstr "❌  Cancelar conexión"
 
-#: src/openlp_vault/gui.py:193
+#: src/openlp_vault/gui.py:200
 #, python-brace-format
 msgid ""
 "Waiting for authorization in the browser… ({minutes:02d}:{seconds:02d}). You "
@@ -92,298 +92,298 @@ msgstr ""
 "Esperando autorización en el navegador… ({minutes:02d}:{seconds:02d}). "
 "Puedes cancelar la conexión."
 
-#: src/openlp_vault/gui.py:207 src/openlp_vault/gui.py:305
-#: src/openlp_vault/gui.py:903
+#: src/openlp_vault/gui.py:214 src/openlp_vault/gui.py:312
+#: src/openlp_vault/gui.py:1057
 msgid "🔗  Connect to Google Drive"
 msgstr "🔗  Conectar con Google Drive"
 
-#: src/openlp_vault/gui.py:222 src/openlp_vault/gui.py:241
+#: src/openlp_vault/gui.py:229 src/openlp_vault/gui.py:248
 msgid "Authentication cancelled. You can try again."
 msgstr "Autenticación cancelada. Puedes intentarlo nuevamente."
 
-#: src/openlp_vault/gui.py:230
+#: src/openlp_vault/gui.py:237
 msgid "Google Drive authentication cancelled."
 msgstr "Autenticación con Google Drive cancelada."
 
-#: src/openlp_vault/gui.py:243
+#: src/openlp_vault/gui.py:250
 msgid "Authorization expired after 2 minutes. You can try again."
 msgstr ""
 "La autorización expiró después de 2 minutos. Puedes intentarlo nuevamente."
 
-#: src/openlp_vault/gui.py:245
+#: src/openlp_vault/gui.py:252
 #, python-brace-format
 msgid "Could not connect to Google Drive: {error}"
 msgstr "No se pudo conectar con Google Drive: {error}"
 
-#: src/openlp_vault/gui.py:255
+#: src/openlp_vault/gui.py:262
 msgid "Connection error"
 msgstr "Error de conexión"
 
-#: src/openlp_vault/gui.py:268 src/openlp_vault/gui.py:903
+#: src/openlp_vault/gui.py:275 src/openlp_vault/gui.py:1057
 msgid "✅  Google Drive connected"
 msgstr "✅  Google Drive conectado"
 
-#: src/openlp_vault/gui.py:272
+#: src/openlp_vault/gui.py:279
 msgid "Google Drive connected successfully."
 msgstr "Google Drive conectado correctamente."
 
-#: src/openlp_vault/gui.py:274
+#: src/openlp_vault/gui.py:281
 msgid "Connection complete"
 msgstr "Conexión completada"
 
-#: src/openlp_vault/gui.py:275
+#: src/openlp_vault/gui.py:282
 msgid "Google Drive connected successfully and is ready to store backups."
 msgstr ""
 "Google Drive se conectó correctamente y ya está listo para guardar respaldos."
 
-#: src/openlp_vault/gui.py:281
+#: src/openlp_vault/gui.py:288
 msgid "Disconnect Google Drive"
 msgstr "Desconectar Google Drive"
 
-#: src/openlp_vault/gui.py:282
+#: src/openlp_vault/gui.py:289
 msgid "Remove the Google Drive authorization stored on this computer?"
 msgstr "¿Eliminar la autorización de Google Drive guardada en este equipo?"
 
-#: src/openlp_vault/gui.py:292
+#: src/openlp_vault/gui.py:299
 msgid "Disconnection error"
 msgstr "Error al desconectar"
 
-#: src/openlp_vault/gui.py:293
+#: src/openlp_vault/gui.py:300
 #, python-brace-format
 msgid "Could not remove the saved authorization: {error}"
 msgstr "No se pudo eliminar la autorización guardada: {error}"
 
-#: src/openlp_vault/gui.py:303 src/openlp_vault/gui.py:871
+#: src/openlp_vault/gui.py:310 src/openlp_vault/gui.py:1025
 msgid "Google Drive has not been connected yet."
 msgstr "Google Drive aún no se ha conectado."
 
-#: src/openlp_vault/gui.py:307
+#: src/openlp_vault/gui.py:314
 msgid "Google Drive disconnected; the local token was removed."
 msgstr "Google Drive desconectado; se eliminó el token local."
 
-#: src/openlp_vault/gui.py:312 src/openlp_vault/gui.py:1001
+#: src/openlp_vault/gui.py:319 src/openlp_vault/gui.py:1162
 msgid "Authentication in progress"
 msgstr "Autenticación en curso"
 
-#: src/openlp_vault/gui.py:313
+#: src/openlp_vault/gui.py:320
 msgid "Wait for authentication to finish before closing this window."
 msgstr "Espera a que termine la autenticación antes de cerrar esta ventana."
 
-#: src/openlp_vault/gui.py:335
+#: src/openlp_vault/gui.py:342
 msgid "⬆️  Create and upload a backup"
 msgstr "⬆️  Crear y subir un respaldo"
 
-#: src/openlp_vault/gui.py:336
+#: src/openlp_vault/gui.py:343
 msgid "⬇️  Download and restore a backup"
 msgstr "⬇️  Descargar y restaurar un respaldo"
 
-#: src/openlp_vault/gui.py:337
+#: src/openlp_vault/gui.py:344
 msgid "⚙️  Settings"
 msgstr "⚙️  Configuración"
 
-#: src/openlp_vault/gui.py:349 src/openlp_vault/cli.py:73
+#: src/openlp_vault/gui.py:356 src/openlp_vault/cli.py:111
 msgid "Authenticating with Google Drive..."
 msgstr "Autenticando en Google Drive..."
 
-#: src/openlp_vault/gui.py:359 src/openlp_vault/gui.py:483
-#: src/openlp_vault/gui.py:546 src/openlp_vault/gui.py:717
-#: src/openlp_vault/gui.py:775
+#: src/openlp_vault/gui.py:366 src/openlp_vault/gui.py:490
+#: src/openlp_vault/gui.py:553 src/openlp_vault/gui.py:724
+#: src/openlp_vault/gui.py:782 src/openlp_vault/gui.py:808
 msgid "Error"
 msgstr "Error"
 
-#: src/openlp_vault/gui.py:359
+#: src/openlp_vault/gui.py:366
 #, python-brace-format
 msgid "Could not authenticate: {error}"
 msgstr "No se pudo autenticar: {error}"
 
-#: src/openlp_vault/gui.py:360 src/openlp_vault/gui.py:484
-#: src/openlp_vault/gui.py:547 src/openlp_vault/gui.py:718
-#: src/openlp_vault/gui.py:776
+#: src/openlp_vault/gui.py:367 src/openlp_vault/gui.py:491
+#: src/openlp_vault/gui.py:554 src/openlp_vault/gui.py:725
+#: src/openlp_vault/gui.py:783
 #, python-brace-format
 msgid "Error: {error}"
 msgstr "Error: {error}"
 
-#: src/openlp_vault/gui.py:367
+#: src/openlp_vault/gui.py:374
 msgid "Create and upload backup"
 msgstr "Crear y subir respaldo"
 
-#: src/openlp_vault/gui.py:374
+#: src/openlp_vault/gui.py:381
 msgid "ZIP file name:"
 msgstr "Nombre del archivo ZIP:"
 
-#: src/openlp_vault/gui.py:378
+#: src/openlp_vault/gui.py:385
 msgid "The file will be uploaded to Google Drive."
 msgstr "El archivo se subirá a Google Drive."
 
-#: src/openlp_vault/gui.py:380
+#: src/openlp_vault/gui.py:387
 msgid "Google Drive is not connected; only a local backup can be created."
 msgstr ""
 "Google Drive no está conectado; solo se puede generar un respaldo local."
 
-#: src/openlp_vault/gui.py:391
+#: src/openlp_vault/gui.py:398
 msgid "⬆️  Create and upload"
 msgstr "⬆️  Crear y subir"
 
-#: src/openlp_vault/gui.py:399
+#: src/openlp_vault/gui.py:406
 msgid "💾  Create local backup"
 msgstr "💾  Crear respaldo local"
 
-#: src/openlp_vault/gui.py:406 src/openlp_vault/gui.py:666
+#: src/openlp_vault/gui.py:413 src/openlp_vault/gui.py:673
 msgid "❌  Cancel"
 msgstr "❌  Cancelar"
 
-#: src/openlp_vault/gui.py:420 src/openlp_vault/cli.py:54
+#: src/openlp_vault/gui.py:427 src/openlp_vault/cli.py:92
 msgid "Starting backup..."
 msgstr "Iniciando respaldo..."
 
-#: src/openlp_vault/gui.py:423 src/openlp_vault/gui.py:498
-#: src/openlp_vault/gui.py:613 src/openlp_vault/gui.py:674
-#: src/openlp_vault/gui.py:680 src/openlp_vault/gui.py:699
-#: src/openlp_vault/gui.py:727
+#: src/openlp_vault/gui.py:430 src/openlp_vault/gui.py:505
+#: src/openlp_vault/gui.py:620 src/openlp_vault/gui.py:681
+#: src/openlp_vault/gui.py:687 src/openlp_vault/gui.py:706
+#: src/openlp_vault/gui.py:734
 msgid "Warning"
 msgstr "Advertencia"
 
-#: src/openlp_vault/gui.py:423 src/openlp_vault/gui.py:498
+#: src/openlp_vault/gui.py:430 src/openlp_vault/gui.py:505
 msgid "The OpenLP installation was not found. Set its path in Settings."
 msgstr ""
 "No se encontró la instalación de OpenLP. Configura la ruta en Configuración."
 
-#: src/openlp_vault/gui.py:428 src/openlp_vault/gui.py:503
+#: src/openlp_vault/gui.py:435 src/openlp_vault/gui.py:510
 #, python-brace-format
 msgid "OpenLP path detected automatically: {source}"
 msgstr "Ruta de OpenLP detectada automáticamente: {source}"
 
-#: src/openlp_vault/gui.py:438
+#: src/openlp_vault/gui.py:445
 msgid "Creating and uploading backup"
 msgstr "Creando y subiendo respaldo"
 
-#: src/openlp_vault/gui.py:445
+#: src/openlp_vault/gui.py:452
 msgid "Please wait — creating and uploading the backup..."
 msgstr "Espera — creando y subiendo el respaldo..."
 
-#: src/openlp_vault/gui.py:452
+#: src/openlp_vault/gui.py:459
 #, fuzzy
 msgid "Creating the backup..."
 msgstr "Creando respaldo local..."
 
-#: src/openlp_vault/gui.py:454 src/openlp_vault/gui.py:523
-#: src/openlp_vault/cli.py:67
+#: src/openlp_vault/gui.py:461 src/openlp_vault/gui.py:530
+#: src/openlp_vault/cli.py:105
 #, python-brace-format
 msgid "Backup file created: {path}"
 msgstr "Archivo de respaldo creado: {path}"
 
-#: src/openlp_vault/gui.py:456
+#: src/openlp_vault/gui.py:463
 #, fuzzy
 msgid "Uploading the backup..."
 msgstr "Aplicando respaldo..."
 
-#: src/openlp_vault/gui.py:458
+#: src/openlp_vault/gui.py:465
 #, python-brace-format
 msgid "Backup uploaded: {name} (id={id})"
 msgstr "Respaldo subido: {name} (id={id})"
 
-#: src/openlp_vault/gui.py:468 src/openlp_vault/gui.py:531
-#: src/openlp_vault/gui.py:714 src/openlp_vault/gui.py:760
+#: src/openlp_vault/gui.py:475 src/openlp_vault/gui.py:538
+#: src/openlp_vault/gui.py:721 src/openlp_vault/gui.py:767
 msgid "Success"
 msgstr "Éxito"
 
-#: src/openlp_vault/gui.py:468
+#: src/openlp_vault/gui.py:475
 msgid "Backup created and uploaded successfully."
 msgstr "Respaldo creado y subido correctamente."
 
-#: src/openlp_vault/gui.py:483
+#: src/openlp_vault/gui.py:490
 #, python-brace-format
 msgid "Could not create or upload the backup: {error}"
 msgstr "No se pudo crear o subir el respaldo: {error}"
 
-#: src/openlp_vault/gui.py:495
+#: src/openlp_vault/gui.py:502
 msgid "Starting local backup creation..."
 msgstr "Iniciando creación local del respaldo..."
 
-#: src/openlp_vault/gui.py:507
+#: src/openlp_vault/gui.py:514
 msgid "Creating local backup"
 msgstr "Creando respaldo local"
 
-#: src/openlp_vault/gui.py:514
+#: src/openlp_vault/gui.py:521
 msgid "Please wait — creating local backup..."
 msgstr "Espera — creando el respaldo local..."
 
-#: src/openlp_vault/gui.py:521
+#: src/openlp_vault/gui.py:528
 msgid "Creating local backup..."
 msgstr "Creando respaldo local..."
 
-#: src/openlp_vault/gui.py:531
+#: src/openlp_vault/gui.py:538
 #, python-brace-format
 msgid "Local backup created: {path}"
 msgstr "Respaldo local creado: {path}"
 
-#: src/openlp_vault/gui.py:546
+#: src/openlp_vault/gui.py:553
 #, python-brace-format
 msgid "Could not create the local backup: {error}"
 msgstr "No se pudo crear el respaldo local: {error}"
 
-#: src/openlp_vault/gui.py:557
+#: src/openlp_vault/gui.py:564
 msgid "Google Drive not connected"
 msgstr "Google Drive no conectado"
 
-#: src/openlp_vault/gui.py:558
+#: src/openlp_vault/gui.py:565
 msgid ""
 "No Google Drive connection has been established. Open Settings to connect it."
 msgstr ""
 "No se ha establecido la conexión con Google Drive. Abre Configuración para "
 "conectarlo."
 
-#: src/openlp_vault/gui.py:564
+#: src/openlp_vault/gui.py:571
 msgid "Refreshing backups"
 msgstr "Actualizando respaldos"
 
-#: src/openlp_vault/gui.py:574
+#: src/openlp_vault/gui.py:581
 msgid "Checking available backups in Google Drive…"
 msgstr "Consultando los respaldos disponibles en Google Drive…"
 
-#: src/openlp_vault/gui.py:600
+#: src/openlp_vault/gui.py:607
 msgid "Error retrieving backups"
 msgstr "Error al consultar respaldos"
 
-#: src/openlp_vault/gui.py:601
+#: src/openlp_vault/gui.py:608
 #, python-brace-format
 msgid "Could not refresh the backup list: {error}"
 msgstr "No se pudo actualizar la lista de respaldos: {error}"
 
-#: src/openlp_vault/gui.py:613
+#: src/openlp_vault/gui.py:620
 msgid "No backups are available."
 msgstr "No hay respaldos disponibles."
 
-#: src/openlp_vault/gui.py:627
+#: src/openlp_vault/gui.py:634
 msgid "Download and restore a backup"
 msgstr "Descargar y restaurar un respaldo"
 
-#: src/openlp_vault/gui.py:636
+#: src/openlp_vault/gui.py:643
 msgid "Select the backup to restore:"
 msgstr "Selecciona el respaldo que deseas restaurar:"
 
-#: src/openlp_vault/gui.py:654
+#: src/openlp_vault/gui.py:661
 msgid "⬇️  Download and restore"
 msgstr "⬇️  Descargar y restaurar"
 
-#: src/openlp_vault/gui.py:660
+#: src/openlp_vault/gui.py:667
 msgid "🗑️  Delete"
 msgstr "🗑️  Eliminar"
 
-#: src/openlp_vault/gui.py:674
+#: src/openlp_vault/gui.py:681
 msgid "Select a backup to restore."
 msgstr "Selecciona un respaldo para restaurar."
 
-#: src/openlp_vault/gui.py:680
+#: src/openlp_vault/gui.py:687
 msgid "The OpenLP destination was not found. Set its path in Settings."
 msgstr ""
 "No se encontró el destino de OpenLP. Configura la ruta en Configuración."
 
-#: src/openlp_vault/gui.py:686
+#: src/openlp_vault/gui.py:693
 msgid "Confirm restore"
 msgstr "Confirmar restauración"
 
-#: src/openlp_vault/gui.py:687
+#: src/openlp_vault/gui.py:694
 #, python-brace-format
 msgid ""
 "Download and restore {name}? The OpenLP installation at {destination} will "
@@ -392,318 +392,399 @@ msgstr ""
 "¿Descargar y restaurar {name}? Se sobrescribirá la instalación de OpenLP en "
 "{destination}."
 
-#: src/openlp_vault/gui.py:699
+#: src/openlp_vault/gui.py:706
 msgid "Select a backup to delete."
 msgstr "Selecciona un respaldo para eliminar."
 
-#: src/openlp_vault/gui.py:704
+#: src/openlp_vault/gui.py:711
 msgid "Confirm deletion"
 msgstr "Confirmar eliminación"
 
-#: src/openlp_vault/gui.py:704
+#: src/openlp_vault/gui.py:711
 #, python-brace-format
 msgid "Delete backup {name}?"
 msgstr "¿Eliminar el respaldo {name}?"
 
-#: src/openlp_vault/gui.py:711
+#: src/openlp_vault/gui.py:718
 #, python-brace-format
 msgid "Backup deleted: {name}"
 msgstr "Respaldo eliminado: {name}"
 
-#: src/openlp_vault/gui.py:714
+#: src/openlp_vault/gui.py:721
 msgid "Backup deleted successfully."
 msgstr "Respaldo eliminado correctamente."
 
-#: src/openlp_vault/gui.py:717
+#: src/openlp_vault/gui.py:724
 #, python-brace-format
 msgid "Could not delete the backup: {error}"
 msgstr "No se pudo eliminar el respaldo: {error}"
 
-#: src/openlp_vault/gui.py:724
+#: src/openlp_vault/gui.py:731
 #, python-brace-format
 msgid "Restoring backup {name}..."
 msgstr "Restaurando respaldo {name}..."
 
-#: src/openlp_vault/gui.py:727
+#: src/openlp_vault/gui.py:734
 msgid "The OpenLP destination was not found."
 msgstr "No se encontró el destino de OpenLP."
 
-#: src/openlp_vault/gui.py:732
+#: src/openlp_vault/gui.py:739
 msgid "Downloading and restoring backup"
 msgstr "Descargando y restaurando respaldo"
 
-#: src/openlp_vault/gui.py:739
+#: src/openlp_vault/gui.py:746
 msgid "Please wait — downloading and applying the backup..."
 msgstr "Espera — descargando y aplicando el respaldo..."
 
-#: src/openlp_vault/gui.py:747 src/openlp_vault/cli.py:122
+#: src/openlp_vault/gui.py:754 src/openlp_vault/cli.py:160
 #, python-brace-format
 msgid "Downloading backup {id}..."
 msgstr "Descargando respaldo {id}..."
 
-#: src/openlp_vault/gui.py:749
+#: src/openlp_vault/gui.py:756
 #, python-brace-format
 msgid "Applying backup to {destination}..."
 msgstr "Aplicando respaldo en {destination}..."
 
-#: src/openlp_vault/gui.py:751 src/openlp_vault/cli.py:128
+#: src/openlp_vault/gui.py:758 src/openlp_vault/cli.py:166
 msgid "Restore complete."
 msgstr "Restauración completada."
 
-#: src/openlp_vault/gui.py:760
+#: src/openlp_vault/gui.py:767
 msgid "Restore completed successfully."
 msgstr "Restauración finalizada correctamente."
 
-#: src/openlp_vault/gui.py:775
+#: src/openlp_vault/gui.py:782
 #, python-brace-format
 msgid "Could not restore the backup: {error}"
 msgstr "No se pudo restaurar el respaldo: {error}"
 
-#: src/openlp_vault/gui.py:785
+#: src/openlp_vault/gui.py:792
 msgid "Checking backups in Drive..."
 msgstr "Consultando respaldos en Drive..."
 
-#: src/openlp_vault/gui.py:790
+#: src/openlp_vault/gui.py:797
 #, python-brace-format
 msgid "{count} backup found."
 msgid_plural "{count} backups found."
 msgstr[0] "Se encontró {count} respaldo."
 msgstr[1] "Se encontraron {count} respaldos."
 
-#: src/openlp_vault/gui.py:794
+#: src/openlp_vault/gui.py:801
 msgid "Not authenticated yet, or backups could not be listed."
 msgstr "Aún no se ha autenticado o no se pudieron listar los respaldos."
 
-#: src/openlp_vault/gui.py:810 src/openlp_vault/gui.py:821
+#: src/openlp_vault/gui.py:809
+#, fuzzy, python-brace-format
+msgid "Could not open {name}: {error}"
+msgstr "No se pudo autenticar: {error}"
+
+#: src/openlp_vault/gui.py:838 src/openlp_vault/gui.py:944
+msgid "Close"
+msgstr "Cerrar"
+
+#: src/openlp_vault/gui.py:859
+#, fuzzy
+msgid "About OpenLP Vault"
+msgstr "Configura OpenLP Vault"
+
+#: src/openlp_vault/gui.py:889
+msgid ""
+"Free software licensed under GNU GPL version 3 or later (GPL-3.0-or-later)."
+msgstr ""
+"Software libre bajo GNU GPL versión 3 o posterior (GPL-3.0-or-later)."
+
+#: src/openlp_vault/gui.py:897 src/openlp_vault/cli.py:51
+#, python-brace-format
+msgid "Maintained by the community of {community}."
+msgstr "Mantenido por la comunidad de {community}."
+
+#: src/openlp_vault/gui.py:905 src/openlp_vault/cli.py:55
+msgid "The church is not the copyright holder."
+msgstr "La iglesia no es titular del copyright."
+
+#: src/openlp_vault/gui.py:909 src/openlp_vault/cli.py:57
+msgid "Contributors retain copyright in their contributions."
+msgstr "Los colaboradores conservan el copyright de sus aportes."
+
+#: src/openlp_vault/gui.py:931
+msgid "View license"
+msgstr "Ver licencia"
+
+#: src/openlp_vault/gui.py:933
+msgid "GNU General Public License"
+msgstr "Licencia Pública General de GNU"
+
+#: src/openlp_vault/gui.py:938
+msgid "View legal notice"
+msgstr "Ver aviso legal"
+
+#: src/openlp_vault/gui.py:940
+msgid "Legal notice"
+msgstr "Aviso legal"
+
+#: src/openlp_vault/gui.py:964 src/openlp_vault/gui.py:975
 msgid "Settings"
 msgstr "Configuración"
 
-#: src/openlp_vault/gui.py:821
+#: src/openlp_vault/gui.py:975
 msgid "Set up OpenLP Vault"
 msgstr "Configura OpenLP Vault"
 
-#: src/openlp_vault/gui.py:828
+#: src/openlp_vault/gui.py:982
 msgid ""
 "Complete these fields and connect Google Drive to store and restore backups."
 msgstr ""
 "Completa estos datos y conecta Google Drive para guardar y restaurar "
 "respaldos."
 
-#: src/openlp_vault/gui.py:835
+#: src/openlp_vault/gui.py:989
 msgid "Credentials file path (credentials.json):"
 msgstr "Ruta del archivo de credenciales (credentials.json):"
 
-#: src/openlp_vault/gui.py:844 src/openlp_vault/gui.py:929
+#: src/openlp_vault/gui.py:998 src/openlp_vault/gui.py:1083
 msgid "Browse…"
 msgstr "Seleccionar…"
 
-#: src/openlp_vault/gui.py:851
+#: src/openlp_vault/gui.py:1005
 msgid "How do I get the credentials file?"
 msgstr "¿Cómo obtener el archivo de credenciales?"
 
-#: src/openlp_vault/gui.py:868
+#: src/openlp_vault/gui.py:1022
 msgid "A saved authorization is available. You can verify the connection."
 msgstr "Hay una autorización guardada. Puedes verificar la conexión."
 
-#: src/openlp_vault/gui.py:911
+#: src/openlp_vault/gui.py:1065
 msgid "🔌  Disconnect Google Drive"
 msgstr "🔌  Desconectar Google Drive"
 
-#: src/openlp_vault/gui.py:920
+#: src/openlp_vault/gui.py:1074
 msgid "Drive folder name:"
 msgstr "Nombre de carpeta en Drive:"
 
-#: src/openlp_vault/gui.py:923
+#: src/openlp_vault/gui.py:1077
 msgid "OpenLP data directory:"
 msgstr "Directorio de datos de OpenLP:"
 
-#: src/openlp_vault/gui.py:945
+#: src/openlp_vault/gui.py:1106
 msgid "OK"
 msgstr "Aceptar"
 
-#: src/openlp_vault/gui.py:953
+#: src/openlp_vault/gui.py:1114
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/openlp_vault/gui.py:978
+#: src/openlp_vault/gui.py:1139
 msgid "Select credentials.json"
 msgstr "Seleccionar credentials.json"
 
-#: src/openlp_vault/gui.py:983
+#: src/openlp_vault/gui.py:1144
 msgid "Select OpenLP directory"
 msgstr "Seleccionar directorio OpenLP"
 
-#: src/openlp_vault/gui.py:1002
+#: src/openlp_vault/gui.py:1163
 msgid "Wait for authentication to finish before saving."
 msgstr "Espera a que termine la autenticación antes de guardar."
 
-#: src/openlp_vault/gui.py:1014
+#: src/openlp_vault/gui.py:1175
 msgid "Settings saved."
 msgstr "Configuración guardada."
 
-#: src/openlp_vault/gui.py:1023
+#: src/openlp_vault/gui.py:1184
 msgid "Google Drive is not connected. Complete the Google Drive setup."
 msgstr ""
 "Google Drive no está conectado. Completa la configuración de Google Drive."
 
-#: src/openlp_vault/gui.py:1027
+#: src/openlp_vault/gui.py:1188
 msgid "Could not connect to Google Drive."
 msgstr "No se pudo establecer la conexión con Google Drive."
 
-#: src/openlp_vault/cli.py:16 src/openlp_vault/cli.py:25
-#: src/openlp_vault/cli.py:44 src/openlp_vault/cli.py:81
-#: src/openlp_vault/cli.py:132
+#: src/openlp_vault/cli.py:24
+msgid "License: GPL-3.0-or-later. Run 'openlp-vault license' for details."
+msgstr ""
+"Licencia: GPL-3.0-or-later. Ejecuta 'openlp-vault license' para ver los "
+"detalles."
+
+#: src/openlp_vault/cli.py:28 src/openlp_vault/cli.py:63
+#: src/openlp_vault/cli.py:82 src/openlp_vault/cli.py:119
+#: src/openlp_vault/cli.py:170
 msgid "Show debugging information"
 msgstr "Mostrar información de depuración"
 
-#: src/openlp_vault/cli.py:24
+#: src/openlp_vault/cli.py:36
+msgid "Show copyright, license, and project information."
+msgstr "Muestra información de copyright, licencia y proyecto."
+
+#: src/openlp_vault/cli.py:41
+#, python-brace-format
+msgid "Contact: {email}"
+msgstr "Contacto: {email}"
+
+#: src/openlp_vault/cli.py:45
+msgid ""
+"Licensed under the GNU General Public License, version 3 or later (GPL-3.0-"
+"or-later)."
+msgstr ""
+"Publicado bajo la Licencia Pública General de GNU, versión 3 o posterior "
+"(GPL-3.0-or-later)."
+
+#: src/openlp_vault/cli.py:58
+msgid "See LICENSE and NOTICE for details."
+msgstr "Consulta LICENSE y NOTICE para ver los detalles."
+
+#: src/openlp_vault/cli.py:59
+#, python-brace-format
+msgid "Project: {url}"
+msgstr "Proyecto: {url}"
+
+#: src/openlp_vault/cli.py:62
 msgid "Authorize access to Google Drive and save the token locally."
 msgstr "Autoriza el acceso a Google Drive y guarda el token localmente."
 
-#: src/openlp_vault/cli.py:26
+#: src/openlp_vault/cli.py:64
 msgid "Path to the OAuth 2.0 credentials JSON"
 msgstr "Ruta al JSON de credenciales de OAuth 2.0"
 
-#: src/openlp_vault/cli.py:27
+#: src/openlp_vault/cli.py:65
 msgid "Path used to store/read the OAuth token"
 msgstr "Ruta donde guardar o leer el token OAuth"
 
-#: src/openlp_vault/cli.py:33
+#: src/openlp_vault/cli.py:71
 msgid "Starting Google Drive authentication..."
 msgstr "Iniciando autenticación con Google Drive..."
 
-#: src/openlp_vault/cli.py:37
+#: src/openlp_vault/cli.py:75
 msgid "Authentication complete."
 msgstr "Autenticación completada."
 
-#: src/openlp_vault/cli.py:38
+#: src/openlp_vault/cli.py:76
 #, python-brace-format
 msgid "Token saved at: {token}"
 msgstr "Token guardado en: {token}"
 
-#: src/openlp_vault/cli.py:40
+#: src/openlp_vault/cli.py:78
 msgid "Drive service is ready."
 msgstr "El servicio de Drive está listo."
 
-#: src/openlp_vault/cli.py:43
+#: src/openlp_vault/cli.py:81
 msgid "Create a backup and upload it to Google Drive."
 msgstr "Crea un respaldo y lo sube a Google Drive."
 
-#: src/openlp_vault/cli.py:45
+#: src/openlp_vault/cli.py:83
 msgid "Local OpenLP directory to back up"
 msgstr "Directorio local de OpenLP para respaldar"
 
-#: src/openlp_vault/cli.py:46
+#: src/openlp_vault/cli.py:84
 msgid "Google Drive folder ID where the backup will be uploaded"
 msgstr "ID de la carpeta de Google Drive donde subir el respaldo"
 
-#: src/openlp_vault/cli.py:47
+#: src/openlp_vault/cli.py:85
 msgid "Drive folder name where the backup will be stored"
 msgstr "Nombre de la carpeta de Drive donde guardar el respaldo"
 
-#: src/openlp_vault/cli.py:48
+#: src/openlp_vault/cli.py:86
 msgid "Only create the local backup without uploading it"
 msgstr "Solo crear el respaldo local sin subirlo"
 
-#: src/openlp_vault/cli.py:58
+#: src/openlp_vault/cli.py:96
 msgid "Could not find the OpenLP installation. Use --source or OPENLP_PATH."
 msgstr ""
 "No se pudo encontrar la instalación de OpenLP. Usa --source u OPENLP_PATH."
 
-#: src/openlp_vault/cli.py:60
+#: src/openlp_vault/cli.py:98
 #, python-brace-format
 msgid "Detected source: {source}"
 msgstr "Origen detectado: {source}"
 
-#: src/openlp_vault/cli.py:70
+#: src/openlp_vault/cli.py:108
 msgid "The backup will not be uploaded to Drive (--no-upload)."
 msgstr "El respaldo no se subirá a Drive (--no-upload)."
 
-#: src/openlp_vault/cli.py:76
+#: src/openlp_vault/cli.py:114
 #, python-brace-format
 msgid "Backup uploaded: {id} ({name})"
 msgstr "Respaldo subido: {id} ({name})"
 
-#: src/openlp_vault/cli.py:80
+#: src/openlp_vault/cli.py:118
 msgid "Restore the OpenLP installation from a backup."
 msgstr "Restaura la instalación de OpenLP desde un respaldo."
 
-#: src/openlp_vault/cli.py:82
+#: src/openlp_vault/cli.py:120
 msgid "ID of the Drive backup to restore"
 msgstr "ID del respaldo de Drive que se restaurará"
 
-#: src/openlp_vault/cli.py:83
+#: src/openlp_vault/cli.py:121
 msgid "Local directory where OpenLP will be restored"
 msgstr "Directorio local donde se restaurará OpenLP"
 
-#: src/openlp_vault/cli.py:84
+#: src/openlp_vault/cli.py:122
 msgid "Only list available backups without restoring"
 msgstr "Solo listar los respaldos disponibles sin restaurar"
 
-#: src/openlp_vault/cli.py:90
+#: src/openlp_vault/cli.py:128
 msgid "Starting restore..."
 msgstr "Iniciando restauración..."
 
-#: src/openlp_vault/cli.py:98 src/openlp_vault/cli.py:147
+#: src/openlp_vault/cli.py:136 src/openlp_vault/cli.py:185
 msgid "No backups were found in Drive."
 msgstr "No se encontraron respaldos en Drive."
 
-#: src/openlp_vault/cli.py:102 src/openlp_vault/cli.py:160
+#: src/openlp_vault/cli.py:140 src/openlp_vault/cli.py:198
 msgid "Available backups:"
 msgstr "Respaldos disponibles:"
 
-#: src/openlp_vault/cli.py:108 src/openlp_vault/cli.py:165
+#: src/openlp_vault/cli.py:146 src/openlp_vault/cli.py:203
 msgid "Invalid selection."
 msgstr "Selección inválida."
 
-#: src/openlp_vault/cli.py:115
+#: src/openlp_vault/cli.py:153
 msgid "Local OpenLP path to restore"
 msgstr "Ruta local de OpenLP para restaurar"
 
-#: src/openlp_vault/cli.py:116
+#: src/openlp_vault/cli.py:154
 #, python-brace-format
 msgid "Restore path: {destination}"
 msgstr "Ruta de restauración: {destination}"
 
-#: src/openlp_vault/cli.py:125
+#: src/openlp_vault/cli.py:163
 msgid "Applying backup..."
 msgstr "Aplicando respaldo..."
 
-#: src/openlp_vault/cli.py:131
+#: src/openlp_vault/cli.py:169
 msgid "Delete a backup stored in Drive."
 msgstr "Elimina un respaldo almacenado en Drive."
 
-#: src/openlp_vault/cli.py:133
+#: src/openlp_vault/cli.py:171
 msgid "ID of the Drive backup to delete"
 msgstr "ID del respaldo de Drive que se eliminará"
 
-#: src/openlp_vault/cli.py:134
+#: src/openlp_vault/cli.py:172
 msgid "Delete without confirmation"
 msgstr "Eliminar sin pedir confirmación"
 
-#: src/openlp_vault/cli.py:140
+#: src/openlp_vault/cli.py:178
 msgid "Starting backup deletion..."
 msgstr "Iniciando eliminación del respaldo..."
 
-#: src/openlp_vault/cli.py:157
+#: src/openlp_vault/cli.py:195
 #, python-brace-format
 msgid "No backup with ID {id} was found."
 msgstr "No se encontró un respaldo con el ID {id}."
 
-#: src/openlp_vault/cli.py:163
+#: src/openlp_vault/cli.py:201
 msgid "Select the number of the backup to delete"
 msgstr "Selecciona el número del respaldo que deseas eliminar"
 
-#: src/openlp_vault/cli.py:172
+#: src/openlp_vault/cli.py:210
 #, python-brace-format
 msgid "Delete '{name}' (id={id})? This action cannot be undone."
 msgstr "¿Eliminar «{name}» (id={id})? Esta acción no se puede deshacer."
 
-#: src/openlp_vault/cli.py:173
+#: src/openlp_vault/cli.py:211
 msgid "Operation cancelled."
 msgstr "Operación cancelada."
 
-#: src/openlp_vault/cli.py:177
+#: src/openlp_vault/cli.py:215
 #, python-brace-format
 msgid "Backup deleted: {name} (id={id})"
 msgstr "Respaldo eliminado: {name} (id={id})"

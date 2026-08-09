@@ -4,6 +4,14 @@ version = "0.1.0"
 description = "Sincronización de respaldos de OpenLP usando Google Drive"
 readme = "README.md"
 requires-python = ">=3.8"
+authors = [
+    { name = "Christian González G.", email = "christian.gonzalez@ucbtrigales.org" },
+]
+maintainers = [
+    { name = "Christian González G.", email = "christian.gonzalez@ucbtrigales.org" },
+]
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE", "NOTICE"]
 dependencies = [
     "google-api-python-client>=2.0.0",
     "google-auth>=2.0.0",
@@ -15,8 +23,12 @@ dependencies = [
 openlp-vault = "openlp_vault.cli:cli"
 openlp-vault-gui = "openlp_vault.gui:main"
 
+[project.urls]
+Homepage = "https://github.com/ucbtrigales/openlp-vault"
+Repository = "https://github.com/ucbtrigales/openlp-vault"
+
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=77.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]

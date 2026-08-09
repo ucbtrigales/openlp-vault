@@ -5,6 +5,8 @@ English | [Español](README.es.md)
 OpenLP Vault creates complete backups of OpenLP data and lets you store,
 restore, and delete them using Google Drive.
 
+Project: <https://github.com/ucbtrigales/openlp-vault>
+
 ## Features
 
 - Desktop GUI for local and Google Drive backups.
@@ -57,3 +59,19 @@ Drive folder name.
 
 See the [usage guide](docs/en/usage.md) for all options and
 [architecture](docs/en/architecture.md) for an overview of the codebase.
+
+## License
+
+Copyright © 2026 Christian González G.
+
+OpenLP Vault is free software licensed under the
+[GNU General Public License v3.0 or later](LICENSE)
+(`GPL-3.0-or-later`). Distributed modifications must remain under the same
+license and provide the corresponding source as required by the GPL.
+
+The project is maintained by the community of Iglesia Evangélica Unión de
+Centros Bíblicos “Trigales”. This acknowledgment does not identify the church
+as the copyright holder.
+
+Contributions are accepted under the same license. See
+[CONTRIBUTING.md](CONTRIBUTING.md).

@@ -9,8 +9,8 @@ rm -rf build dist dmg_temp
 python -m pip install --upgrade pip setuptools wheel
 python -m pip install -r requirements.txt pyinstaller
 
-python -m PyInstaller --clean --onefile --console --name openlp-vault --paths src --collect-all openlp_vault --collect-submodules openlp_vault src/openlp_vault/__main__.py
-python -m PyInstaller --clean --onefile --windowed --name OpenLPVault-gui --paths src --collect-all openlp_vault --collect-submodules openlp_vault \
+python -m PyInstaller --clean --onefile --console --name openlp-vault --paths src --collect-all openlp_vault --collect-submodules openlp_vault --add-data "LICENSE:." --add-data "NOTICE:." src/openlp_vault/__main__.py
+python -m PyInstaller --clean --onefile --windowed --name OpenLPVault-gui --paths src --collect-all openlp_vault --collect-submodules openlp_vault --add-data "LICENSE:." --add-data "NOTICE:." \
   --hidden-import openlp_vault.backup \
   --hidden-import openlp_vault.auth \
   --hidden-import openlp_vault.config \
@@ -25,6 +25,8 @@ python -m PyInstaller --clean --onefile --windowed --name OpenLPVault-gui --path
 
 mkdir -p dmg_temp
 cp -R dist/OpenLPVault-gui.app dmg_temp/
+cp LICENSE dmg_temp/
+cp NOTICE dmg_temp/
 if [ -f "dist/openlp-vault" ]; then
   cp dist/openlp-vault dmg_temp/
   chmod +x dmg_temp/openlp-vault

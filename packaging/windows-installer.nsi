@@ -7,6 +7,8 @@ OutFile "${OUT_FILE}"
 InstallDir "$PROGRAMFILES64\OpenLP Vault"
 RequestExecutionLevel admin
 
+LicenseData "LICENSE"
+Page license
 Page directory
 Page instfiles
 
@@ -20,6 +22,8 @@ Section "MainSection" SEC01
     # Incluye AMBOS archivos compilados en el instalador final
     File "dist\openlp-vault.exe"
     File "dist\openlp-vault-gui.exe"
+    File "LICENSE"
+    File "NOTICE"
     
     # Si tienes un icono para el ejecutable o instalador:
     # File "packaging\openlp-vault.ico"
@@ -47,6 +51,8 @@ SectionEnd
 Section "Uninstall"
     Delete "$INSTDIR\openlp-vault.exe"
     Delete "$INSTDIR\openlp-vault-gui.exe"
+    Delete "$INSTDIR\LICENSE"
+    Delete "$INSTDIR\NOTICE"
     Delete "$INSTDIR\uninstall.exe"
     RMDir "$INSTDIR"
 

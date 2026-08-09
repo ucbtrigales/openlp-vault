@@ -27,7 +27,13 @@ BASH_BLOCK = re.compile(r"```bash\n(.*?)```", re.DOTALL)
 
 
 def markdown_files() -> list[Path]:
-    return [ROOT / "README.md", ROOT / "README.es.md", *sorted((ROOT / "docs").rglob("*.md"))]
+    return [
+        ROOT / "README.md",
+        ROOT / "README.es.md",
+        ROOT / "CONTRIBUTING.md",
+        ROOT / "CONTRIBUTING.es.md",
+        *sorted((ROOT / "docs").rglob("*.md")),
+    ]
 
 
 def test_each_document_has_an_english_and_spanish_version():
@@ -35,9 +41,12 @@ def test_each_document_has_an_english_and_spanish_version():
     assert {path.name for path in (ROOT / "docs" / "es").glob("*.md")} == DOC_NAMES
     assert (ROOT / "README.md").is_file()
     assert (ROOT / "README.es.md").is_file()
+    assert (ROOT / "CONTRIBUTING.md").is_file()
+    assert (ROOT / "CONTRIBUTING.es.md").is_file()
 
     document_pairs = [
         (ROOT / "README.md", ROOT / "README.es.md"),
+        (ROOT / "CONTRIBUTING.md", ROOT / "CONTRIBUTING.es.md"),
         *((ROOT / "docs" / "en" / name, ROOT / "docs" / "es" / name) for name in DOC_NAMES),
     ]
     for english, spanish in document_pairs:
