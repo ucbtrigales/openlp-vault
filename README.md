@@ -1,38 +1,70 @@
 # OpenLP Vault
 
-Herramienta para sincronizar respaldos completos de OpenLP usando Google Drive.
+English | [Español](README.es.md)
 
-Características principales:
+OpenLP Vault creates complete backups of OpenLP data and lets you store,
+restore, and delete them using Google Drive.
 
-- Descubrimiento de instalación local de OpenLP
-- Autenticación con Google Drive
-- Respaldo y restauración de la instalación completa
-- Eliminación de respaldos en Drive
-- Versionado, integridad y recuperación
-- CLI mínima para operaciones comunes
+## Features
 
-## Uso rápido
+- Desktop GUI for local and Google Drive backups.
+- Backup download, restoration, and deletion.
+- CLI commands for authentication, backup, restore, and deletion.
+- Automatic OpenLP data-directory discovery on Linux, macOS, and Windows.
+- OAuth authentication with local token reuse.
+- English and Spanish interfaces based on the system locale.
+- SHA-256 integrity and versioning utilities.
+- Packaging for Windows, macOS, and Linux AppImage.
+
+## Development installation
+
+OpenLP Vault requires Python 3.8 or later:
 
 ```bash
 python -m pip install -r requirements.txt
 python -m pip install -e .
 ```
 
+Alternatively, use the setup script:
+
 ```bash
-openlp-vault auth --credentials credentials.json
-openlp-vault backup --debug
-openlp-vault restore --debug
-openlp-vault delete --debug
+./setup.sh
+source .venv/bin/activate
 ```
 
-Vea `docs/usage.md` para instrucciones completas.
+## Quick start
 
-## Interfaz gráfica
+Create Google Drive credentials by following the
+[Google Drive setup guide](docs/en/drive_setup.md).
 
-Si prefieres una interfaz visual, usa:
+```bash
+openlp-vault auth --credentials credentials.json
+openlp-vault backup
+openlp-vault restore --list-only
+openlp-vault restore --backup-id BACKUP_ID
+openlp-vault delete --backup-id BACKUP_ID
+```
+
+Launch the desktop interface with:
 
 ```bash
 openlp-vault-gui
 ```
 
-La GUI es portable y funciona en Windows, macOS y Linux siempre que Python y Tkinter estén disponibles.
+On first launch, the GUI opens Settings when no reusable OAuth authorization
+exists. Select `credentials.json`, the OpenLP data directory, and the Google
+Drive folder name.
+
+## Language
+
+OpenLP Vault checks `LC_ALL`, `LC_MESSAGES`, and `LANG`, in that order.
+It supports English and Spanish and falls back to English for unsupported
+locales.
+
+```bash
+LANG=es_CL.UTF-8 openlp-vault --help
+LANG=en_US.UTF-8 openlp-vault-gui
+```
+
+See the [usage guide](docs/en/usage.md) for all options and
+[architecture](docs/en/architecture.md) for an overview of the codebase.

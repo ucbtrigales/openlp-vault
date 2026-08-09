@@ -12,6 +12,7 @@ rm -rf build dist AppDir OpenLPVault-x86_64.AppImage appimagetool.AppImage
 PYTHONPATH=src python -m PyInstaller --clean --onefile --console \
   --name openlp-vault \
   --paths src \
+  --collect-all openlp_vault \
   --collect-submodules openlp_vault \
   src/openlp_vault/__main__.py
 

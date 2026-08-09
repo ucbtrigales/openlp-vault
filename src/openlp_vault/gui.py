@@ -23,11 +23,15 @@ from . import __version__
 from .discovery import find_openlp_installation
 from .restore import apply_backup, delete_backup, download_backup, list_backups
 from .utils import format_drive_timestamp
+from .i18n import _, detect_language, ngettext
 
 LOG = logging.getLogger("openlp_vault.gui")
 
 OAUTH_TIMEOUT_SECONDS = 120
-DRIVE_SETUP_URL = "https://github.com/ucbtrigales/openlp-vault/blob/main/docs/drive_setup.md"
+DRIVE_SETUP_URL = (
+    "https://github.com/ucbtrigales/openlp-vault/blob/main/docs/"
+    f"{detect_language()}/drive_setup.md"
+)
 DRIVE_STATUS_COLORS = {
     "connected": {"background": "#d1e7dd", "foreground": "#0f5132"},
     "pending": {"background": "#cff4fc", "foreground": "#055160"},
@@ -46,7 +50,10 @@ class OpenLPVaultGUI(tk.Tk):
         self.drive_user_email = None
         self.backups = []
         self.credentials_path = tk.StringVar(value="credentials.json")
-        self.source_path = tk.StringVar(value=find_openlp_installation() or "")
+        discovered_source = find_openlp_installation()
+        self.source_path = tk.StringVar(
+            value=str(discovered_source) if discovered_source is not None else ""
+        )
         self.drive_folder_name = tk.StringVar(value="OpenLP Vault")
 
         self._load_config()
@@ -73,23 +80,23 @@ class OpenLPVaultGUI(tk.Tk):
     def _validate_configuration_settings(self):
         credentials_path = Path(self.credentials_path.get()).expanduser()
         if not credentials_path.is_file():
-            raise ValueError("Selecciona un archivo credentials.json existente.")
+            raise ValueError(_("Select an existing credentials.json file."))
         try:
             credentials_data = json.loads(credentials_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
-            raise ValueError("El archivo de credenciales no contiene JSON válido.") from exc
+            raise ValueError(_("The credentials file does not contain valid JSON.")) from exc
 
         oauth_client = credentials_data.get("installed") or credentials_data.get("web")
         if not isinstance(oauth_client, dict) or not oauth_client.get("client_id") or not oauth_client.get("client_secret"):
-            raise ValueError("El archivo no contiene credenciales OAuth válidas.")
+            raise ValueError(_("The file does not contain valid OAuth credentials."))
 
         source_path = Path(self.source_path.get()).expanduser()
         if not source_path.is_dir():
-            raise ValueError("Selecciona un directorio de datos de OpenLP existente.")
+            raise ValueError(_("Select an existing OpenLP data directory."))
 
         folder_name = self.drive_folder_name.get().strip()
         if not folder_name:
-            raise ValueError("Indica un nombre para la carpeta de Google Drive.")
+            raise ValueError(_("Enter a name for the Google Drive folder."))
 
         return credentials_path, source_path, folder_name
 
@@ -103,8 +110,10 @@ class OpenLPVaultGUI(tk.Tk):
 
     def _connected_drive_status(self):
         if self.drive_user_email:
-            return f"Google Drive está conectado como {self.drive_user_email}."
-        return "Google Drive ya está conectado."
+            return _("Google Drive is connected.\nAccount: {email}").format(
+                email=self.drive_user_email
+            )
+        return _("Google Drive is already connected.")
 
     def _set_drive_status(self, status_var, message, state="disconnected"):
         status_var.set(message)
@@ -119,7 +128,7 @@ class OpenLPVaultGUI(tk.Tk):
             credentials_path, source_path, folder_name = self._validate_configuration_settings()
         except ValueError as exc:
             self._set_drive_status(status_var, str(exc), "disconnected")
-            messagebox.showwarning("Configuración incompleta", str(exc), parent=dialog)
+            messagebox.showwarning(_("Incomplete configuration"), str(exc), parent=dialog)
             return
 
         self.credentials_path.set(str(credentials_path))
@@ -139,7 +148,7 @@ class OpenLPVaultGUI(tk.Tk):
         self._configuration_authenticating = True
 
         connect_button.configure(
-            text="❌  Cancelar conexión",
+            text=_("❌  Cancel connection"),
             state="normal",
             command=lambda: self._cancel_configuration_authentication(
                 attempt_id, status_var, connect_button, disconnect_button, save_button, close_button
@@ -153,7 +162,7 @@ class OpenLPVaultGUI(tk.Tk):
 
         def _authenticate_and_verify():
             try:
-                drive_service, _ = authenticate(
+                drive_service, _credentials = authenticate(
                     client_secrets_file=credentials_path,
                     oauth_timeout_seconds=OAUTH_TIMEOUT_SECONDS,
                     cancel_event=cancel_event,
@@ -181,8 +190,8 @@ class OpenLPVaultGUI(tk.Tk):
         minutes, seconds = divmod(remaining, 60)
         self._set_drive_status(
             status_var,
-            f"Esperando autorización en el navegador… ({minutes:02d}:{seconds:02d}). "
-            "Puedes cancelar la conexión.",
+            _("Waiting for authorization in the browser… ({minutes:02d}:{seconds:02d}). "
+              "You can cancel the connection.").format(minutes=minutes, seconds=seconds),
             "pending",
         )
         if remaining > 0:
@@ -195,7 +204,7 @@ class OpenLPVaultGUI(tk.Tk):
         self._active_configuration_auth_attempt = None
         self._configuration_auth_cancel_event = None
         self._set_drive_status(status_var, message, "disconnected")
-        connect_button.configure(text="🔗  Conectar con Google Drive", state="normal")
+        connect_button.configure(text=_("🔗  Connect to Google Drive"), state="normal")
         disconnect_button.configure(state="normal" if has_reusable_token() else "disabled")
         save_button.configure(state="normal")
         close_button.configure(state="normal")
@@ -210,7 +219,7 @@ class OpenLPVaultGUI(tk.Tk):
             cancel_event.set()
         self._restore_connection_controls(
             status_var, connect_button, disconnect_button, save_button, close_button,
-            "Autenticación cancelada. Puedes intentarlo nuevamente."
+            _("Authentication cancelled. You can try again.")
         )
         connect_button.configure(
             command=lambda: self._start_configuration_authentication(
@@ -218,7 +227,7 @@ class OpenLPVaultGUI(tk.Tk):
                 disconnect_button, save_button, close_button
             )
         )
-        self._append_log("Autenticación con Google Drive cancelada.")
+        self._append_log(_("Google Drive authentication cancelled."))
 
     def _finish_configuration_authentication(
         self, attempt_id, dialog, status_var, connect_button, disconnect_button,
@@ -229,11 +238,11 @@ class OpenLPVaultGUI(tk.Tk):
 
         if error is not None:
             if isinstance(error, AuthenticationCancelledError):
-                message = "Autenticación cancelada. Puedes intentarlo nuevamente."
+                message = _("Authentication cancelled. You can try again.")
             elif "timed out" in str(error).lower():
-                message = "La autorización expiró después de 2 minutos. Puedes intentarlo nuevamente."
+                message = _("Authorization expired after 2 minutes. You can try again.")
             else:
-                message = f"No se pudo conectar con Google Drive: {error}"
+                message = _("Could not connect to Google Drive: {error}").format(error=error)
             self._restore_connection_controls(
                 status_var, connect_button, disconnect_button, save_button, close_button, message
             )
@@ -243,7 +252,7 @@ class OpenLPVaultGUI(tk.Tk):
                 )
             )
             if not isinstance(error, AuthenticationCancelledError):
-                messagebox.showerror("Error de conexión", message, parent=dialog)
+                messagebox.showerror(_("Connection error"), message, parent=dialog)
             return
 
         self._configuration_authenticating = False
@@ -256,21 +265,21 @@ class OpenLPVaultGUI(tk.Tk):
         self._set_drive_status(
             status_var, self._connected_drive_status(), "connected"
         )
-        connect_button.configure(text="✅  Google Drive conectado", state="disabled")
+        connect_button.configure(text=_("✅  Google Drive connected"), state="disabled")
         disconnect_button.configure(state="normal")
         save_button.configure(state="normal")
         close_button.configure(state="normal")
-        self._append_log("Google Drive conectado correctamente.")
+        self._append_log(_("Google Drive connected successfully."))
         messagebox.showinfo(
-            "Conexión completada",
-            "Google Drive se conectó correctamente y ya está listo para guardar respaldos.",
+            _("Connection complete"),
+            _("Google Drive connected successfully and is ready to store backups."),
             parent=dialog,
         )
 
     def _disconnect_google_drive(self, dialog, status_var, connect_button, disconnect_button):
         confirmed = messagebox.askyesno(
-            "Desconectar Google Drive",
-            "¿Eliminar la autorización de Google Drive guardada en este equipo?",
+            _("Disconnect Google Drive"),
+            _("Remove the Google Drive authorization stored on this computer?"),
             parent=dialog,
         )
         if not confirmed:
@@ -280,8 +289,8 @@ class OpenLPVaultGUI(tk.Tk):
             default_token_path().unlink(missing_ok=True)
         except OSError as exc:
             messagebox.showerror(
-                "Error al desconectar",
-                f"No se pudo eliminar la autorización guardada: {exc}",
+                _("Disconnection error"),
+                _("Could not remove the saved authorization: {error}").format(error=exc),
                 parent=dialog,
             )
             return
@@ -291,17 +300,17 @@ class OpenLPVaultGUI(tk.Tk):
         self.backups = []
         self.startup_state = self._detect_startup_state()
         self._set_drive_status(
-            status_var, "Google Drive aún no se ha conectado.", "disconnected"
+            status_var, _("Google Drive has not been connected yet."), "disconnected"
         )
-        connect_button.configure(text="🔗  Conectar con Google Drive", state="normal")
+        connect_button.configure(text=_("🔗  Connect to Google Drive"), state="normal")
         disconnect_button.configure(state="disabled")
-        self._append_log("Google Drive desconectado; se eliminó el token local.")
+        self._append_log(_("Google Drive disconnected; the local token was removed."))
 
     def _close_configuration(self, dialog):
         if getattr(self, "_configuration_authenticating", False):
             messagebox.showwarning(
-                "Autenticación en curso",
-                "Espera a que termine la autenticación antes de cerrar esta ventana.",
+                _("Authentication in progress"),
+                _("Wait for authentication to finish before closing this window."),
                 parent=dialog,
             )
             return
@@ -319,11 +328,13 @@ class OpenLPVaultGUI(tk.Tk):
         style.configure("ActionDialogBold.TButton", font=(None, 11, "bold"))
         style.configure("Footer.TLabel", font=(None, 9), foreground="#6c757d")
 
-        ttk.Label(main_frame, text="OpenLP Vault", font=(None, 20, "bold")).pack(pady=(0, 12))
+        ttk.Label(
+            main_frame, text="OpenLP Vault", font=("TkDefaultFont", 20, "bold")
+        ).pack(pady=(0, 12))
 
-        ttk.Button(main_frame, text="⬆️  Crear y subir un respaldo", command=self._open_backup_dialog).pack(fill="x", pady=8)
-        ttk.Button(main_frame, text="⬇️  Descargar y restaurar un respaldo", command=self._open_restore_dialog).pack(fill="x", pady=8)
-        ttk.Button(main_frame, text="⚙️  Configuración", command=self._open_configuration).pack(fill="x", pady=12)
+        ttk.Button(main_frame, text=_("⬆️  Create and upload a backup"), command=self._open_backup_dialog).pack(fill="x", pady=8)
+        ttk.Button(main_frame, text=_("⬇️  Download and restore a backup"), command=self._open_restore_dialog).pack(fill="x", pady=8)
+        ttk.Button(main_frame, text=_("⚙️  Settings"), command=self._open_configuration).pack(fill="x", pady=12)
 
         self.log_text = tk.Text(main_frame, height=8, wrap="word", state="disabled")
         self.log_text.pack(fill="both", expand=False, pady=(0, 8))
@@ -335,36 +346,38 @@ class OpenLPVaultGUI(tk.Tk):
         self.log_text.config(state="disabled")
 
     def _authenticate(self):
-        self._append_log("Autenticando en Google Drive...")
+        self._append_log(_("Authenticating with Google Drive..."))
         try:
-            drive_service, _ = authenticate(client_secrets_file=self.credentials_path.get())
+            drive_service, _credentials = authenticate(
+                client_secrets_file=self.credentials_path.get()
+            )
             self.drive_service = drive_service
             self.drive_user_email = self._get_drive_user_email(drive_service)
             self._refresh_backups()
         except Exception as exc:
             LOG.exception("Error de autenticación")
-            messagebox.showerror("Error", f"No se pudo autenticar: {exc}", parent=self)
-            self._append_log(f"Error: {exc}")
+            messagebox.showerror(_("Error"), _("Could not authenticate: {error}").format(error=exc), parent=self)
+            self._append_log(_("Error: {error}").format(error=exc))
 
     def _open_backup_dialog(self):
         default_name = self._default_backup_filename()
         backup_name_var = tk.StringVar(value=default_name)
 
         dialog = tk.Toplevel(self)
-        dialog.title("Crear y subir respaldo")
+        dialog.title(_("Create and upload backup"))
         dialog.geometry("700x190")
         dialog.resizable(True, True)
 
         frame = ttk.Frame(dialog, padding=12)
         frame.pack(fill="both", expand=True)
 
-        ttk.Label(frame, text="Nombre del archivo ZIP:").pack(anchor="w", pady=(0, 8))
+        ttk.Label(frame, text=_("ZIP file name:")).pack(anchor="w", pady=(0, 8))
         ttk.Entry(frame, textvariable=backup_name_var).pack(fill="x", pady=(0, 8))
         drive_available = self.drive_service is not None
         availability_message = (
-            "El archivo se subirá a Google Drive."
+            _("The file will be uploaded to Google Drive.")
             if drive_available
-            else "Google Drive no está conectado; sólo se puede generar un respaldo local."
+            else _("Google Drive is not connected; only a local backup can be created.")
         )
         ttk.Label(frame, text=availability_message).pack(anchor="w", pady=(0, 12))
 
@@ -375,7 +388,7 @@ class OpenLPVaultGUI(tk.Tk):
 
         upload_button = ttk.Button(
             button_frame,
-            text="⬆️  Crear y subir",
+            text=_("⬆️  Create and upload"),
             command=lambda: self._backup(backup_name_var.get(), dialog),
             style="ActionDialogBold.TButton",
             state="normal" if drive_available else "disabled",
@@ -383,14 +396,14 @@ class OpenLPVaultGUI(tk.Tk):
         upload_button.grid(row=0, column=0, sticky="nsew", padx=(0, 6))
         ttk.Button(
             button_frame,
-            text="💾  Crear respaldo local",
+            text=_("💾  Create local backup"),
             command=lambda: self._create_local_backup(backup_name_var.get(), dialog),
             style="ActionDialog.TButton",
             state="normal",
         ).grid(row=0, column=1, sticky="nsew", padx=6)
         ttk.Button(
             button_frame,
-            text="❌  Cancelar",
+            text=_("❌  Cancel"),
             command=dialog.destroy,
             style="ActionDialog.TButton",
         ).grid(row=0, column=2, sticky="nsew", padx=(6, 0))
@@ -404,15 +417,15 @@ class OpenLPVaultGUI(tk.Tk):
         if dialog:
             dialog.destroy()
 
-        self._append_log("Iniciando respaldo...")
+        self._append_log(_("Starting backup..."))
         source = self.source_path.get() or find_openlp_installation()
         if not source:
-            messagebox.showwarning("Advertencia", "No se encontró la instalación de OpenLP. Configure la ruta en la ventana de configuración.", parent=self)
+            messagebox.showwarning(_("Warning"), _("The OpenLP installation was not found. Set its path in Settings."), parent=self)
             return
 
         if not self.source_path.get():
-            self.source_path.set(source)
-            self._append_log(f"Ruta de OpenLP detectada automáticamente: {source}")
+            self.source_path.set(str(source))
+            self._append_log(_("OpenLP path detected automatically: {source}").format(source=source))
 
         try:
             self._ensure_authenticated()
@@ -422,27 +435,27 @@ class OpenLPVaultGUI(tk.Tk):
 
         # Crear diálogo modal de progreso
         progress = tk.Toplevel(self)
-        progress.title("Creando y subiendo respaldo")
+        progress.title(_("Creating and uploading backup"))
         progress.resizable(True, True)
         progress.transient(self)
         progress.grab_set()
 
         p_frame = ttk.Frame(progress, padding=12)
         p_frame.pack(fill="both", expand=True)
-        ttk.Label(p_frame, text="Por favor espere — creando y subiendo el respaldo...").pack(anchor="center", pady=(4, 8))
+        ttk.Label(p_frame, text=_("Please wait — creating and uploading the backup...")).pack(anchor="center", pady=(4, 8))
         pb = ttk.Progressbar(p_frame, mode="indeterminate", length=360)
         pb.pack(pady=(0, 8))
         pb.start(12)
 
         def _do_backup():
             try:
-                self._append_log(f"Creando el respaldo...")
+                self._append_log(_("Creating the backup..."))
                 backup_path = create_backup(source, zip_name=zip_name)
-                self._append_log(f"Archivo de respaldo creado: {backup_path}")
+                self._append_log(_("Backup file created: {path}").format(path=backup_path))
                 folder_name = self.drive_folder_name.get() or "OpenLP Vault"
-                self._append_log(f"Subiendo el respaldo...")
+                self._append_log(_("Uploading the backup..."))
                 metadata = upload_backup(backup_path, self.drive_service, folder_name=folder_name)
-                self._append_log(f"Respaldo subido: {metadata.get('name')} (id={metadata.get('id')})")
+                self._append_log(_("Backup uploaded: {name} (id={id})").format(name=metadata.get("name"), id=metadata.get("id")))
 
                 def _on_success():
                     try:
@@ -452,7 +465,7 @@ class OpenLPVaultGUI(tk.Tk):
                         progress.destroy()
                     cleanup_backup_file(backup_path)
                     self._refresh_backups()
-                    messagebox.showinfo("Éxito", "Respaldo creado y subido correctamente.", parent=self)
+                    messagebox.showinfo(_("Success"), _("Backup created and uploaded successfully."), parent=self)
 
                 self.after(0, _on_success)
             except Exception as exc:
@@ -467,8 +480,8 @@ class OpenLPVaultGUI(tk.Tk):
                         except Exception:
                             pass
                         progress.destroy()
-                    messagebox.showerror("Error", f"No se pudo crear o subir el respaldo: {exc}", parent=self)
-                    self._append_log(f"Error: {exc}")
+                    messagebox.showerror(_("Error"), _("Could not create or upload the backup: {error}").format(error=exc), parent=self)
+                    self._append_log(_("Error: {error}").format(error=exc))
 
                 self.after(0, _on_error)
 
@@ -479,35 +492,35 @@ class OpenLPVaultGUI(tk.Tk):
         if dialog:
             dialog.destroy()
 
-        self._append_log("Iniciando creación local de respaldo...")
+        self._append_log(_("Starting local backup creation..."))
         source = self.source_path.get() or find_openlp_installation()
         if not source:
-            messagebox.showwarning("Advertencia", "No se encontró la instalación de OpenLP. Configure la ruta en la ventana de configuración.", parent=self)
+            messagebox.showwarning(_("Warning"), _("The OpenLP installation was not found. Set its path in Settings."), parent=self)
             return
 
         if not self.source_path.get():
-            self.source_path.set(source)
-            self._append_log(f"Ruta de OpenLP detectada automáticamente: {source}")
+            self.source_path.set(str(source))
+            self._append_log(_("OpenLP path detected automatically: {source}").format(source=source))
 
         # Crear diálogo modal de progreso para creación local
         progress = tk.Toplevel(self)
-        progress.title("Creando respaldo local")
+        progress.title(_("Creating local backup"))
         progress.resizable(True, True)
         progress.transient(self)
         progress.grab_set()
 
         p_frame = ttk.Frame(progress, padding=12)
         p_frame.pack(fill="both", expand=True)
-        ttk.Label(p_frame, text="Por favor espere — creando respaldo local...").pack(anchor="center", pady=(4, 8))
+        ttk.Label(p_frame, text=_("Please wait — creating local backup...")).pack(anchor="center", pady=(4, 8))
         pb = ttk.Progressbar(p_frame, mode="indeterminate", length=360)
         pb.pack(pady=(0, 8))
         pb.start(12)
 
         def _do_local():
             try:
-                self._append_log("Creando respaldo local...")
+                self._append_log(_("Creating local backup..."))
                 backup_path = create_backup(source, zip_name=zip_name)
-                self._append_log(f"Archivo de respaldo creado: {backup_path}")
+                self._append_log(_("Backup file created: {path}").format(path=backup_path))
 
                 def _on_success():
                     try:
@@ -515,7 +528,7 @@ class OpenLPVaultGUI(tk.Tk):
                     finally:
                         progress.grab_release()
                         progress.destroy()
-                    messagebox.showinfo("Éxito", f"Respaldo local creado: {backup_path}", parent=self)
+                    messagebox.showinfo(_("Success"), _("Local backup created: {path}").format(path=backup_path), parent=self)
 
                 self.after(0, _on_success)
             except Exception as exc:
@@ -530,8 +543,8 @@ class OpenLPVaultGUI(tk.Tk):
                         except Exception:
                             pass
                         progress.destroy()
-                    messagebox.showerror("Error", f"No se pudo crear el respaldo local: {exc}", parent=self)
-                    self._append_log(f"Error: {exc}")
+                    messagebox.showerror(_("Error"), _("Could not create the local backup: {error}").format(error=exc), parent=self)
+                    self._append_log(_("Error: {error}").format(error=exc))
 
                 self.after(0, _on_error)
 
@@ -541,15 +554,14 @@ class OpenLPVaultGUI(tk.Tk):
     def _open_restore_dialog(self):
         if self.drive_service is None:
             messagebox.showwarning(
-                "Google Drive no conectado",
-                "No se ha establecido la conexión con Google Drive. "
-                "Ve a la ventana de Configuración para conectarlo.",
+                _("Google Drive not connected"),
+                _("No Google Drive connection has been established. Open Settings to connect it."),
                 parent=self,
             )
             return
 
         progress = tk.Toplevel(self)
-        progress.title("Actualizando respaldos")
+        progress.title(_("Refreshing backups"))
         progress.resizable(True, True)
         progress.transient(self)
         progress.grab_set()
@@ -559,7 +571,7 @@ class OpenLPVaultGUI(tk.Tk):
         progress_frame.pack(fill="both", expand=True)
         ttk.Label(
             progress_frame,
-            text="Consultando los respaldos disponibles en Google Drive…",
+            text=_("Checking available backups in Google Drive…"),
         ).pack(pady=(0, 10))
         progress_bar = ttk.Progressbar(progress_frame, mode="indeterminate", length=380)
         progress_bar.pack(fill="x")
@@ -585,8 +597,8 @@ class OpenLPVaultGUI(tk.Tk):
                         exc_info=(type(error), error, error.__traceback__),
                     )
                     messagebox.showerror(
-                        "Error al consultar respaldos",
-                        f"No se pudo actualizar la lista de respaldos: {error}",
+                        _("Error retrieving backups"),
+                        _("Could not refresh the backup list: {error}").format(error=error),
                         parent=self,
                     )
 
@@ -598,7 +610,7 @@ class OpenLPVaultGUI(tk.Tk):
                 self.backups = backups
                 if not backups:
                     messagebox.showwarning(
-                        "Advertencia", "No hay respaldos disponibles.", parent=self
+                        _("Warning"), _("No backups are available."), parent=self
                     )
                     return
                 self._show_restore_dialog()
@@ -612,7 +624,7 @@ class OpenLPVaultGUI(tk.Tk):
             self.backups, key=lambda item: item.get("createdTime", ""), reverse=True
         )
         dialog = tk.Toplevel(self)
-        dialog.title("Descargar y restaurar un respaldo")
+        dialog.title(_("Download and restore a backup"))
         dialog.geometry("820x480")
         dialog.resizable(True, True)
 
@@ -621,8 +633,8 @@ class OpenLPVaultGUI(tk.Tk):
 
         ttk.Label(
             frame,
-            text="Seleccione el respaldo a restaurar:",
-            font=(None, 12, "bold"),
+            text=_("Select the backup to restore:"),
+            font=("TkDefaultFont", 12, "bold"),
         ).pack(anchor="w", pady=(0, 8))
 
         listbox = tk.Listbox(frame, height=12, width=92)
@@ -639,19 +651,19 @@ class OpenLPVaultGUI(tk.Tk):
 
         ttk.Button(
             button_frame,
-            text="⬇️  Descargar y restaurar",
+            text=_("⬇️  Download and restore"),
             command=lambda: self._restore_selected(listbox, dialog),
             style="ActionDialogBold.TButton",
         ).grid(row=0, column=0, sticky="nsew", padx=(0, 6))
         ttk.Button(
             button_frame,
-            text="🗑️  Eliminar",
+            text=_("🗑️  Delete"),
             command=lambda: self._delete_selected(listbox, dialog),
             style="ActionDialog.TButton",
         ).grid(row=0, column=1, sticky="nsew", padx=6)
         ttk.Button(
             button_frame,
-            text="❌  Cancelar",
+            text=_("❌  Cancel"),
             command=dialog.destroy,
             style="ActionDialog.TButton",
         ).grid(row=0, column=2, sticky="nsew", padx=(6, 0))
@@ -659,20 +671,20 @@ class OpenLPVaultGUI(tk.Tk):
     def _restore_selected(self, listbox, dialog):
         selection = listbox.curselection()
         if not selection:
-            messagebox.showwarning("Advertencia", "Seleccione un respaldo para restaurar.", parent=dialog)
+            messagebox.showwarning(_("Warning"), _("Select a backup to restore."), parent=dialog)
             return
         sorted_backups = self._get_sorted_backups()
         backup = sorted_backups[selection[0]]
         destination = self.source_path.get() or find_openlp_installation()
         if not destination:
-            messagebox.showwarning("Advertencia", "No se encontró el destino de OpenLP. Configure la ruta en Configuración.", parent=self)
+            messagebox.showwarning(_("Warning"), _("The OpenLP destination was not found. Set its path in Settings."), parent=self)
             return
         # Pedir confirmación antes de restaurar
         parent = dialog
         parent.attributes("-topmost", True)
         confirmed = messagebox.askyesno(
-            "Confirmar restauración",
-            f"¿Descargar y restaurar el respaldo {backup.get('name')}? Se sobrescribirá la instalación de OpenLP en {destination}.",
+            _("Confirm restore"),
+            _("Download and restore {name}? The OpenLP installation at {destination} will be overwritten.").format(name=backup.get("name"), destination=destination),
             parent=parent,
         )
         parent.attributes("-topmost", False)
@@ -684,47 +696,47 @@ class OpenLPVaultGUI(tk.Tk):
     def _delete_selected(self, listbox, parent):
         selection = listbox.curselection()
         if not selection:
-            messagebox.showwarning("Advertencia", "Seleccione un respaldo para eliminar.", parent=parent)
+            messagebox.showwarning(_("Warning"), _("Select a backup to delete."), parent=parent)
             return
         sorted_backups = self._get_sorted_backups()
         backup = sorted_backups[selection[0]]
         parent.attributes("-topmost", True)
-        confirmed = messagebox.askyesno("Confirmar eliminación", f"¿Eliminar el respaldo {backup.get('name')}?", parent=parent)
+        confirmed = messagebox.askyesno(_("Confirm deletion"), _("Delete backup {name}?").format(name=backup.get("name")), parent=parent)
         parent.attributes("-topmost", False)
         if not confirmed:
             return
 
         try:
             delete_backup(backup.get('id'), self.drive_service)
-            self._append_log(f"Respaldo eliminado: {backup.get('name')}")
+            self._append_log(_("Backup deleted: {name}").format(name=backup.get("name")))
             self._refresh_backups()
             listbox.delete(selection[0])
-            messagebox.showinfo("Éxito", "Respaldo eliminado correctamente.", parent=parent)
+            messagebox.showinfo(_("Success"), _("Backup deleted successfully."), parent=parent)
         except Exception as exc:
             LOG.exception("Error al eliminar respaldo")
-            messagebox.showerror("Error", f"No se pudo eliminar el respaldo: {exc}", parent=parent)
-            self._append_log(f"Error: {exc}")
+            messagebox.showerror(_("Error"), _("Could not delete the backup: {error}").format(error=exc), parent=parent)
+            self._append_log(_("Error: {error}").format(error=exc))
 
     def _get_sorted_backups(self):
         return sorted(self.backups, key=lambda item: item.get("createdTime", ""), reverse=True)
 
     def _restore_backup(self, backup):
-        self._append_log(f"Restaurando respaldo {backup.get('name')}...")
+        self._append_log(_("Restoring backup {name}...").format(name=backup.get("name")))
         destination = self.source_path.get() or find_openlp_installation()
         if not destination:
-            messagebox.showwarning("Advertencia", "No se encontró el destino de OpenLP.", parent=self)
+            messagebox.showwarning(_("Warning"), _("The OpenLP destination was not found."), parent=self)
             return
 
         # Crear diálogo modal de progreso
         progress = tk.Toplevel(self)
-        progress.title("Descargando y restaurando respaldo")
+        progress.title(_("Downloading and restoring backup"))
         progress.resizable(True, True)
         progress.transient(self)
         progress.grab_set()
 
         p_frame = ttk.Frame(progress, padding=12)
         p_frame.pack(fill="both", expand=True)
-        ttk.Label(p_frame, text="Por favor espere — descargando y aplicando el respaldo...").pack(anchor="center", pady=(4, 8))
+        ttk.Label(p_frame, text=_("Please wait — downloading and applying the backup...")).pack(anchor="center", pady=(4, 8))
         pb = ttk.Progressbar(p_frame, mode="indeterminate", length=360)
         pb.pack(pady=(0, 8))
         pb.start(12)
@@ -732,11 +744,11 @@ class OpenLPVaultGUI(tk.Tk):
         def _do_restore():
             try:
                 archive_path = Path(tempfile.mkdtemp(prefix="openlp_restore_")) / f"{backup.get('id')}.zip"
-                self._append_log(f"Descargando respaldo {backup.get('id')}...")
+                self._append_log(_("Downloading backup {id}...").format(id=backup.get("id")))
                 download_backup(backup.get('id'), self.drive_service, archive_path)
-                self._append_log(f"Aplicando respaldo a {destination}...")
+                self._append_log(_("Applying backup to {destination}...").format(destination=destination))
                 apply_backup(archive_path, destination)
-                self._append_log("Restauración completada.")
+                self._append_log(_("Restore complete."))
 
                 def _on_success():
                     try:
@@ -745,7 +757,7 @@ class OpenLPVaultGUI(tk.Tk):
                         progress.grab_release()
                         progress.destroy()
                     cleanup_backup_file(archive_path)
-                    messagebox.showinfo("Éxito", "Restauración finalizada correctamente.", parent=self)
+                    messagebox.showinfo(_("Success"), _("Restore completed successfully."), parent=self)
 
                 self.after(0, _on_success)
             except Exception as exc:
@@ -760,8 +772,8 @@ class OpenLPVaultGUI(tk.Tk):
                         except Exception:
                             pass
                         progress.destroy()
-                    messagebox.showerror("Error", f"No se pudo restaurar el respaldo: {exc}", parent=self)
-                    self._append_log(f"Error: {exc}")
+                    messagebox.showerror(_("Error"), _("Could not restore the backup: {error}").format(error=exc), parent=self)
+                    self._append_log(_("Error: {error}").format(error=exc))
 
                 self.after(0, _on_error)
 
@@ -770,16 +782,16 @@ class OpenLPVaultGUI(tk.Tk):
 
     def _refresh_backups(self, silent=False):
         if not silent:
-            self._append_log("Consultando respaldos en Drive...")
+            self._append_log(_("Checking backups in Drive..."))
         try:
             self._ensure_authenticated()
             self.backups = list_backups(self.drive_service)
             if not silent:
-                self._append_log(f"{len(self.backups)} respaldos encontrados.")
+                self._append_log(ngettext("{count} backup found.", "{count} backups found.", len(self.backups)).format(count=len(self.backups)))
         except Exception:
             self.backups = []
             if not silent:
-                self._append_log("No autenticado aún o no se pudieron listar respaldos.")
+                self._append_log(_("Not authenticated yet, or backups could not be listed."))
 
     def _open_configuration(self, first_run=False):
         existing_dialog = getattr(self, "_configuration_dialog", None)
@@ -795,8 +807,8 @@ class OpenLPVaultGUI(tk.Tk):
             "<Destroy>",
             lambda event: setattr(self, "_configuration_dialog", None) if event.widget is dialog else None,
         )
-        dialog.title("Configuración")
-        dialog.geometry("700x480" if first_run else "700x450")
+        dialog.title(_("Settings"))
+        dialog.geometry("800x480")
         dialog.resizable(True, True)
         dialog.transient(self)
         self._configuration_authenticating = False
@@ -806,19 +818,21 @@ class OpenLPVaultGUI(tk.Tk):
         frame = ttk.Frame(dialog, padding=16)
         frame.pack(fill="both", expand=True)
 
-        heading = "Configura OpenLP Vault" if first_run else "Configuración"
-        ttk.Label(frame, text=heading, font=(None, 14, "bold")).pack(anchor="w", pady=(0, 8))
+        heading = _("Set up OpenLP Vault") if first_run else _("Settings")
+        ttk.Label(
+            frame, text=heading, font=("TkDefaultFont", 14, "bold")
+        ).pack(anchor="w", pady=(0, 8))
         if first_run:
             ttk.Label(
                 frame,
-                text="Completa estos datos y conecta Google Drive para guardar y restaurar respaldos.",
-                wraplength=660,
+                text=_("Complete these fields and connect Google Drive to store and restore backups."),
+                wraplength=760,
                 justify="left",
             ).pack(anchor="w", pady=(0, 10))
 
         ttk.Label(
             frame,
-            text="Ruta del archivo de credenciales (credentials.json):",
+            text=_("Credentials file path (credentials.json):"),
         ).pack(anchor="w", pady=(6, 0))
         credentials_row = ttk.Frame(frame)
         credentials_row.pack(fill="x", pady=2)
@@ -827,18 +841,18 @@ class OpenLPVaultGUI(tk.Tk):
         )
         ttk.Button(
             credentials_row,
-            text="Seleccionar…",
+            text=_("Browse…"),
             command=lambda: self._choose_credentials(dialog),
         ).pack(side="right", padx=(8, 0))
 
         frame_background = ttk.Style().lookup("TFrame", "background") or self.cget("background")
         credentials_help_label = tk.Label(
             frame,
-            text="¿Cómo obtener el archivo de credenciales?",
+            text=_("How do I get the credentials file?"),
             foreground="#0563c1",
             background=frame_background,
             cursor="hand2",
-            font=(None, 10, "underline"),
+            font=("TkDefaultFont", 10, "underline"),
         )
         credentials_help_label.pack(anchor="w", pady=(0, 8))
         credentials_help_label.bind(
@@ -851,28 +865,31 @@ class OpenLPVaultGUI(tk.Tk):
             initial_status = self._connected_drive_status()
             initial_status_state = "connected"
         elif connection_available:
-            initial_status = "Hay una autorización guardada. Puedes verificar la conexión."
+            initial_status = _("A saved authorization is available. You can verify the connection.")
             initial_status_state = "pending"
         else:
-            initial_status = "Google Drive aún no se ha conectado."
+            initial_status = _("Google Drive has not been connected yet.")
             initial_status_state = "disconnected"
         status_var = tk.StringVar(value=initial_status)
 
         connection_frame = ttk.Frame(frame)
         connection_frame.pack(fill="x", pady=(14, 12))
-        connection_frame.columnconfigure(0, weight=5)
-        connection_frame.columnconfigure(1, weight=2)
+        connection_frame.columnconfigure(0, weight=1)
+        connection_frame.columnconfigure(1, weight=0, minsize=280)
         connection_frame.rowconfigure(0, weight=1)
 
+        status_colors = DRIVE_STATUS_COLORS[initial_status_state]
         status_bar = tk.Label(
             connection_frame,
             textvariable=status_var,
             anchor="w",
             justify="left",
             wraplength=480,
+            height=2,
             padx=10,
             pady=7,
-            **DRIVE_STATUS_COLORS[initial_status_state],
+            background=status_colors["background"],
+            foreground=status_colors["foreground"],
         )
         status_bar.grid(row=0, column=0, sticky="nsew", padx=(0, 8))
         self._configuration_status_bar = status_bar
@@ -883,31 +900,33 @@ class OpenLPVaultGUI(tk.Tk):
 
         connect_button = ttk.Button(
             drive_buttons_frame,
-            text="✅  Google Drive conectado" if self.drive_service is not None else "🔗  Conectar con Google Drive",
+            text=_("✅  Google Drive connected") if self.drive_service is not None else _("🔗  Connect to Google Drive"),
             style="Bold.TButton",
+            width=30,
         )
         connect_button.grid(row=0, column=0, sticky="ew", pady=(0, 4))
 
         disconnect_button = ttk.Button(
             drive_buttons_frame,
-            text="🔌  Desconectar Google Drive",
+            text=_("🔌  Disconnect Google Drive"),
             command=lambda: self._disconnect_google_drive(
                 dialog, status_var, connect_button, disconnect_button
             ),
             state="normal" if connection_available else "disabled",
+            width=30,
         )
         disconnect_button.grid(row=1, column=0, sticky="ew", pady=(4, 0))
 
-        ttk.Label(frame, text="Nombre de carpeta en Drive:").pack(anchor="w", pady=(8, 0))
+        ttk.Label(frame, text=_("Drive folder name:")).pack(anchor="w", pady=(8, 0))
         ttk.Entry(frame, textvariable=self.drive_folder_name).pack(fill="x", pady=2)
 
-        ttk.Label(frame, text="Directorio de datos de OpenLP:").pack(anchor="w", pady=(8, 0))
+        ttk.Label(frame, text=_("OpenLP data directory:")).pack(anchor="w", pady=(8, 0))
         source_row = ttk.Frame(frame)
         source_row.pack(fill="x", pady=2)
         ttk.Entry(source_row, textvariable=self.source_path).pack(side="left", fill="x", expand=True)
         ttk.Button(
             source_row,
-            text="Seleccionar…",
+            text=_("Browse…"),
             command=lambda: self._choose_source(dialog),
         ).pack(side="right", padx=(8, 0))
 
@@ -923,7 +942,7 @@ class OpenLPVaultGUI(tk.Tk):
         ).grid(row=0, column=0, sticky="w")
         save_button = ttk.Button(
             button_frame,
-            text="Aceptar",
+            text=_("OK"),
             command=lambda: self._save_configuration(dialog),
             style="Bold.TButton",
             width=14,
@@ -931,7 +950,7 @@ class OpenLPVaultGUI(tk.Tk):
         save_button.grid(row=0, column=2, padx=(0, 8))
         close_button = ttk.Button(
             button_frame,
-            text="Cancelar",
+            text=_("Cancel"),
             command=lambda: self._close_configuration(dialog),
             width=14,
         )
@@ -948,20 +967,20 @@ class OpenLPVaultGUI(tk.Tk):
 
         dialog.update_idletasks()
         required_height = dialog.winfo_reqheight()
-        dialog.minsize(700, required_height)
+        dialog.minsize(800, required_height)
         if dialog.winfo_height() < required_height:
-            dialog.geometry(f"700x{required_height}")
+            dialog.geometry(f"800x{required_height}")
 
         dialog.grab_set()
         dialog.focus_set()
 
     def _choose_credentials(self, parent=None):
-        path = filedialog.askopenfilename(title="Seleccionar credentials.json", filetypes=[("JSON", "*.json")], parent=parent or self)
+        path = filedialog.askopenfilename(title=_("Select credentials.json"), filetypes=[("JSON", "*.json")], parent=parent or self)
         if path:
             self.credentials_path.set(path)
 
     def _choose_source(self, parent=None):
-        path = filedialog.askdirectory(title="Seleccionar directorio OpenLP", parent=parent or self)
+        path = filedialog.askdirectory(title=_("Select OpenLP directory"), parent=parent or self)
         if path:
             self.source_path.set(path)
 
@@ -979,8 +998,8 @@ class OpenLPVaultGUI(tk.Tk):
     def _save_configuration(self, dialog=None):
         if getattr(self, "_configuration_authenticating", False):
             messagebox.showwarning(
-                "Autenticación en curso",
-                "Espera a que termine la autenticación antes de guardar.",
+                _("Authentication in progress"),
+                _("Wait for authentication to finish before saving."),
                 parent=dialog or self,
             )
             return
@@ -992,7 +1011,7 @@ class OpenLPVaultGUI(tk.Tk):
         }
         save_config(config)
         self.startup_state = self._detect_startup_state()
-        self._append_log("Configuración guardada.")
+        self._append_log(_("Settings saved."))
         if dialog:
             dialog.destroy()
 
@@ -1001,11 +1020,11 @@ class OpenLPVaultGUI(tk.Tk):
             return
         if not has_reusable_token():
             self._open_configuration(first_run=True)
-            raise RuntimeError("Google Drive no está conectado. Completa la configuración de Google Drive.")
+            raise RuntimeError(_("Google Drive is not connected. Complete the Google Drive setup."))
 
         self._authenticate()
         if self.drive_service is None:
-            raise RuntimeError("No se pudo establecer la conexión con Google Drive.")
+            raise RuntimeError(_("Could not connect to Google Drive."))
 
 
 def main():
