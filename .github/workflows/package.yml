@@ -26,7 +26,7 @@ jobs:
       - name: Build AppImage
         run: bash packaging/linux-appimage-build.sh
       - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: linux-appimage
           path: dist/*.AppImage
@@ -51,7 +51,7 @@ jobs:
           shell: pwsh
           run: pwsh packaging/build-windows.ps1
         - name: Upload Windows artifacts
-          uses: actions/upload-artifact@v4
+          uses: actions/upload-artifact@v7
           with:
             name: windows-installer
             path: dist/*.exe
@@ -71,7 +71,7 @@ jobs:
       - name: Build macOS DMG
         run: bash packaging/build-macos-dmg.sh
       - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: macos-dmg
           path: dist/*.dmg
@@ -85,7 +85,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: release-assets
 

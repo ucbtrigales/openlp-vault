@@ -15,8 +15,11 @@ def test_windows_installer_contains_cli_and_gui():
 
     assert '"--name", "openlp-vault"' in build_script
     assert '"--name", "openlp-vault-gui"' in build_script
-    assert 'File "dist\\openlp-vault.exe"' in installer
-    assert 'File "dist\\openlp-vault-gui.exe"' in installer
+    assert 'File "${PROJECT_ROOT}\\dist\\openlp-vault.exe"' in installer
+    assert 'File "${PROJECT_ROOT}\\dist\\openlp-vault-gui.exe"' in installer
+    assert 'Icon "${__FILEDIR__}\\openlp-vault.ico"' in installer
+    assert 'LicenseData "${PROJECT_ROOT}\\LICENSE"' in installer
+    assert 'OutFile "${OUT_FILE}"' in installer
     assert "/DPRODUCT_VERSION=$version" in build_script
 
 

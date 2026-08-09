@@ -3,15 +3,16 @@
 !define PRODUCT_VERSION "0.0.0"
 !endif
 !define PRODUCT_PUBLISHER "UCB Trigales"
-!define OUT_FILE "dist\OpenLPVault-Setup-v${PRODUCT_VERSION}.exe"
+!define PROJECT_ROOT "${__FILEDIR__}\.."
+!define OUT_FILE "${PROJECT_ROOT}\dist\OpenLPVault-Setup-v${PRODUCT_VERSION}.exe"
 
 OutFile "${OUT_FILE}"
 InstallDir "$PROGRAMFILES64\OpenLP Vault"
 RequestExecutionLevel admin
-Icon "packaging\openlp-vault.ico"
-UninstallIcon "packaging\openlp-vault.ico"
+Icon "${__FILEDIR__}\openlp-vault.ico"
+UninstallIcon "${__FILEDIR__}\openlp-vault.ico"
 
-LicenseData "LICENSE"
+LicenseData "${PROJECT_ROOT}\LICENSE"
 Page license
 Page directory
 Page instfiles
@@ -23,10 +24,10 @@ Section "MainSection" SEC01
     SetOutPath "$INSTDIR"
     
     # Incluye AMBOS archivos compilados en el instalador final
-    File "dist\openlp-vault.exe"
-    File "dist\openlp-vault-gui.exe"
-    File "LICENSE"
-    File "NOTICE"
+    File "${PROJECT_ROOT}\dist\openlp-vault.exe"
+    File "${PROJECT_ROOT}\dist\openlp-vault-gui.exe"
+    File "${PROJECT_ROOT}\LICENSE"
+    File "${PROJECT_ROOT}\NOTICE"
     
     # Accesos directos (Apuntando a la versión GUI como principal)
     CreateDirectory "$SMPROGRAMS\OpenLP Vault"
