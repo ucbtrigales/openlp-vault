@@ -1,3 +1,5 @@
+!include "LogicLib.nsh"
+
 !define PRODUCT_NAME "OpenLP Vault"
 !ifndef PRODUCT_VERSION
 !define PRODUCT_VERSION "0.0.0"
@@ -35,7 +37,7 @@ Section "MainSection" SEC01
     CreateShortCut "$DESKTOP\OpenLP Vault.lnk" "$INSTDIR\openlp-vault-gui.exe"
 
     # Agregar carpeta de instalación al PATH para que la CLI funcione desde la línea de comandos
-    ReadRegExpandStr $0 "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path"
+    ReadRegStr $0 "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path"
     ${If} $0 == ""
       StrCpy $0 "$INSTDIR"
     ${Else}

@@ -20,6 +20,9 @@ def test_windows_installer_contains_cli_and_gui():
     assert 'Icon "${__FILEDIR__}\\openlp-vault.ico"' in installer
     assert 'LicenseData "${PROJECT_ROOT}\\LICENSE"' in installer
     assert 'OutFile "${OUT_FILE}"' in installer
+    assert '!include "LogicLib.nsh"' in installer
+    assert "ReadRegStr" in installer
+    assert "ReadRegExpandStr" not in installer
     assert "/DPRODUCT_VERSION=$version" in build_script
 
 
