@@ -23,7 +23,7 @@ def capture(window, destination: Path) -> None:
     window.update()
     destination.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(
-        ["import", "-window", str(window.winfo_id()), str(destination)],
+        ["import", "-window", window.title(), str(destination)],
         check=True,
     )
 
@@ -40,6 +40,11 @@ def generate() -> None:
         patch("openlp_vault.gui.has_reusable_token", return_value=True),
         patch.object(OpenLPVaultGUI, "_load_config", return_value=None),
         patch.object(OpenLPVaultGUI, "_refresh_backups", return_value=None),
+        patch.object(
+            OpenLPVaultGUI,
+            "_default_backup_filename",
+            return_value="openlp_backup_church_20260808T183000Z",
+        ),
     ):
         app = OpenLPVaultGUI()
         app.geometry("620x450")

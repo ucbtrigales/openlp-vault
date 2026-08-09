@@ -71,6 +71,24 @@ The main window can:
 Settings are stored in `~/.openlp-vault/config.json`, and the OAuth token is
 stored in `~/.openlp-vault/token.json`.
 
+### Screenshots
+
+Main window:
+
+![OpenLP Vault main window](../assets/screenshots/en/main-window.png)
+
+Create and upload a backup:
+
+![Create and upload a backup](../assets/screenshots/en/upload-backup.png)
+
+Download and restore a backup:
+
+![Download and restore a backup](../assets/screenshots/en/download-backup.png)
+
+Settings:
+
+![OpenLP Vault settings](../assets/screenshots/en/settings.png)
+
 ## Command-line interface
 
 ```bash

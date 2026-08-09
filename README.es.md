@@ -53,6 +53,8 @@ Abre la interfaz gráfica con:
 openlp-vault-gui
 ```
 
+![Ventana principal de OpenLP Vault](docs/assets/screenshots/es/main-window.png)
+
 En la primera ejecución, la GUI abre Configuración si no existe una
 autorización OAuth reutilizable. Selecciona `credentials.json`, el directorio
 de OpenLP y el nombre de la carpeta de Google Drive.
@@ -70,8 +72,7 @@ OpenLP Vault es software libre publicado bajo la
 misma licencia y proporcionar el código fuente correspondiente según la GPL.
 
 El proyecto es mantenido por la comunidad de la Iglesia Evangélica Unión de
-Centros Bíblicos «Trigales». Este reconocimiento no presenta a la iglesia como
-titular del copyright.
+Centros Bíblicos «Trigales».
 
 Las contribuciones se aceptan bajo esa misma licencia. Consulta
 [CONTRIBUTING.es.md](CONTRIBUTING.es.md).

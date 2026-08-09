@@ -72,6 +72,24 @@ Desde la ventana principal se puede:
 La configuración se guarda en `~/.openlp-vault/config.json` y el token OAuth
 en `~/.openlp-vault/token.json`.
 
+### Capturas de pantalla
+
+Ventana principal:
+
+![Ventana principal de OpenLP Vault](../assets/screenshots/es/main-window.png)
+
+Crear y subir un respaldo:
+
+![Crear y subir un respaldo](../assets/screenshots/es/upload-backup.png)
+
+Descargar y restaurar un respaldo:
+
+![Descargar y restaurar un respaldo](../assets/screenshots/es/download-backup.png)
+
+Configuración:
+
+![Configuración de OpenLP Vault](../assets/screenshots/es/settings.png)
+
 ## Interfaz de línea de comandos
 
 ```bash
