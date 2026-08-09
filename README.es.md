@@ -5,7 +5,9 @@
 OpenLP Vault crea respaldos completos de los datos de OpenLP y permite
 guardarlos, restaurarlos y eliminarlos mediante Google Drive.
 
-Proyecto: <https://github.com/ucbtrigales/openlp-vault>
+Proyecto: <https://ucbtrigales.github.io/openlp-vault/es/>
+
+Repositorio: <https://github.com/ucbtrigales/openlp-vault>
 
 ## Características
 
@@ -14,7 +16,6 @@ Proyecto: <https://github.com/ucbtrigales/openlp-vault>
 - CLI para autenticación, respaldo, restauración y eliminación.
 - Detección automática del directorio de OpenLP en Linux, macOS y Windows.
 - Autenticación OAuth con reutilización del token local.
-- Interfaz en inglés y español según el idioma del sistema.
 - Utilidades de integridad y versionado con SHA-256.
 - Empaquetado para Windows, macOS y Linux AppImage.
 

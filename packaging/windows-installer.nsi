@@ -6,6 +6,8 @@
 OutFile "${OUT_FILE}"
 InstallDir "$PROGRAMFILES64\OpenLP Vault"
 RequestExecutionLevel admin
+Icon "packaging\openlp-vault.ico"
+UninstallIcon "packaging\openlp-vault.ico"
 
 LicenseData "LICENSE"
 Page license

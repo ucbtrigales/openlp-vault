@@ -53,6 +53,14 @@ class OpenLPVaultGUI(tk.Tk):
         self.geometry("500x400")
         self.resizable(True, True)
 
+        logo_path = Path(__file__).with_name("assets") / "openlp-vault-logo.png"
+        try:
+            self._application_logo_image = tk.PhotoImage(file=str(logo_path))
+            self.iconphoto(True, self._application_logo_image)
+        except (OSError, tk.TclError):
+            self._application_logo_image = None
+            LOG.warning("No se pudo cargar el icono de OpenLP Vault", exc_info=True)
+
         self.drive_service = None
         self.drive_user_email = None
         self.backups = []
@@ -335,9 +343,21 @@ class OpenLPVaultGUI(tk.Tk):
         style.configure("ActionDialogBold.TButton", font=(None, 11, "bold"))
         style.configure("Footer.TLabel", font=(None, 9), foreground="#6c757d")
 
+        heading_frame = ttk.Frame(main_frame)
+        heading_frame.pack(pady=(0, 12))
+        if self._application_logo_image is not None:
+            scale_factor = max(
+                1, (self._application_logo_image.width() + 63) // 64
+            )
+            self._main_logo_image = self._application_logo_image.subsample(
+                scale_factor
+            )
+            ttk.Label(heading_frame, image=self._main_logo_image).pack(
+                side="left", padx=(0, 10)
+            )
         ttk.Label(
-            main_frame, text="OpenLP Vault", font=("TkDefaultFont", 20, "bold")
-        ).pack(pady=(0, 12))
+            heading_frame, text="OpenLP Vault", font=("TkDefaultFont", 20, "bold")
+        ).pack(side="left")
 
         ttk.Button(main_frame, text=_("⬆️  Create and upload a backup"), command=self._open_backup_dialog).pack(fill="x", pady=8)
         ttk.Button(main_frame, text=_("⬇️  Download and restore a backup"), command=self._open_restore_dialog).pack(fill="x", pady=8)
@@ -863,9 +883,23 @@ class OpenLPVaultGUI(tk.Tk):
 
         frame = ttk.Frame(dialog, padding=18)
         frame.pack(fill="both", expand=True)
+        heading_frame = ttk.Frame(frame)
+        heading_frame.pack(fill="x", pady=(0, 12))
+        logo_path = Path(__file__).with_name("assets") / "openlp-vault-logo.png"
+        try:
+            logo_image = tk.PhotoImage(file=str(logo_path))
+            scale_factor = max(1, (logo_image.width() + 79) // 80)
+            self._about_logo_image = logo_image.subsample(scale_factor)
+            ttk.Label(heading_frame, image=self._about_logo_image).pack(
+                side="left", padx=(0, 14)
+            )
+        except (OSError, tk.TclError):
+            LOG.warning("No se pudo cargar el logo de OpenLP Vault", exc_info=True)
         ttk.Label(
-            frame, text=f"OpenLP Vault {__version__}", font=("TkDefaultFont", 16, "bold")
-        ).pack(anchor="w", pady=(0, 12))
+            heading_frame,
+            text=f"OpenLP Vault {__version__}",
+            font=("TkDefaultFont", 16, "bold"),
+        ).pack(side="left")
         ttk.Label(frame, text=COPYRIGHT_NOTICE).pack(anchor="w")
 
         background = ttk.Style().lookup("TFrame", "background") or self.cget("background")
@@ -899,10 +933,6 @@ class OpenLPVaultGUI(tk.Tk):
             ),
             wraplength=580,
             justify="left",
-        ).pack(anchor="w")
-        ttk.Label(
-            frame,
-            text=_("The church is not the copyright holder."),
         ).pack(anchor="w")
         ttk.Label(
             frame,

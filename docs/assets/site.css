@@ -1,0 +1,81 @@
+:root {
+  --background: #ffffff;
+  --surface: #f6f7f8;
+  --text: #202124;
+  --muted: #5f6368;
+  --line: #dadce0;
+  --link: #1769aa;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--background);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; line-height: 1.6; }
+a { color: var(--link); }
+img { display: block; max-width: 100%; }
+.container { width: min(1100px, calc(100% - 40px)); margin-inline: auto; }
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus { left: 16px; top: 12px; z-index: 20; padding: 8px 12px; background: white; }
+
+.site-header { border-bottom: 1px solid var(--line); background: var(--background); }
+.nav { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.brand { display: flex; align-items: center; gap: 9px; color: var(--text); text-decoration: none; font-weight: 700; }
+.brand img { width: 34px; height: 34px; object-fit: contain; }
+.nav-links { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+.nav-links a { color: var(--muted); text-decoration: none; }
+.nav-links a:hover, .nav-links a:focus { color: var(--link); }
+
+main > section { padding: 42px 0; }
+main > section + section { border-top: 1px solid var(--line); }
+.intro { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 36px; align-items: center; }
+h1 { margin: 0 0 14px; font-size: clamp(2.35rem, 5vw, 3.25rem); line-height: 1.05; }
+.title-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.title-row img { width: 68px; height: 68px; object-fit: contain; }
+.title-row h1 { margin: 0; }
+h2 { margin: 0 0 18px; font-size: 1.7rem; }
+h3 { margin: 0 0 6px; font-size: 1.05rem; }
+p { margin: 0 0 16px; }
+.lead { color: var(--muted); font-size: 1.12rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.button { display: inline-flex; min-height: 42px; align-items: center; padding: 0 16px; border: 1px solid var(--line); border-radius: 6px; color: var(--text); text-decoration: none; font-weight: 650; }
+.button.primary { color: white; border-color: var(--link); background: var(--link); }
+.intro-image { padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.intro-image img { width: 100%; height: auto; aspect-ratio: 620 / 450; object-fit: contain; }
+
+.feature-list { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 38px; }
+.feature-list article { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.feature-list p { color: var(--muted); }
+
+.usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.usage-grid ul { padding-left: 20px; }
+pre { overflow-x: auto; padding: 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 0.9rem; }
+
+.gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.gallery figure { margin: 0; }
+.gallery a { display: block; padding: 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.gallery img { width: 100%; aspect-ratio: 16 / 10; object-fit: contain; }
+.gallery figcaption { margin-top: 8px; color: var(--muted); }
+
+.document-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 30px; padding: 0; list-style: none; }
+.document-list a { display: block; padding: 14px 0; border-bottom: 1px solid var(--line); font-weight: 650; text-decoration: none; }
+
+.site-footer { padding: 34px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+.site-footer p { margin: 4px 0; }
+
+@media (max-width: 720px) {
+  .nav-links a:not(.language) { display: none; }
+  .intro, .usage-grid { grid-template-columns: 1fr; }
+  .feature-list, .gallery, .document-list { grid-template-columns: 1fr; }
+  main > section { padding: 34px 0; }
+}
+
+@media (max-width: 420px) {
+  .container { width: min(100% - 28px, 1100px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

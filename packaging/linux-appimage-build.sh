@@ -20,6 +20,7 @@ PYTHONPATH=src python -m PyInstaller --clean --onefile --console \
 
 PYTHONPATH=src python -m PyInstaller --clean --onefile --windowed \
   --name openlp-vault-gui \
+  --icon packaging/openlp-vault.png \
   --paths src \
   --collect-all openlp_vault \
   --collect-submodules openlp_vault \

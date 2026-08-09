@@ -12,26 +12,6 @@ python -m pip install -e .
 You can also run `./setup.sh`, which creates `.venv`, installs
 dependencies, and installs the package in editable mode.
 
-## Language
-
-The GUI and CLI support English and Spanish. Language is read exclusively from
-standard system variables, in this order:
-
-1. `LC_ALL`
-2. `LC_MESSAGES`
-3. `LANG`
-
-Regional locales are reduced to their base language. For example,
-`es_CL.UTF-8` and `es_ES.UTF-8` use Spanish. If no variable specifies a
-supported language, English is used.
-
-```bash
-LANG=es_CL.UTF-8 openlp-vault --help
-LANG=en_US.UTF-8 openlp-vault-gui
-```
-
-There is no language selector in the GUI or dedicated language option.
-
 ## Legal and project information
 
 The CLI help includes a short license reference. Display copyright, license,
@@ -43,7 +23,7 @@ openlp-vault license
 
 In the GUI, click the underlined `OpenLP Vault VERSION` text in Settings to
 open **About OpenLP Vault**. The dialog links to the maintainer email and
-<https://github.com/ucbtrigales/openlp-vault>, and provides scrollable views
+<https://ucbtrigales.github.io/openlp-vault/>, and provides scrollable views
 of `LICENSE` and `NOTICE`.
 
 ## Desktop interface

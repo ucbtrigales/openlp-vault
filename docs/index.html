@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Create complete backups of OpenLP data and manage them with Google Drive.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="OpenLP Vault">
+  <meta property="og:description" content="Create complete backups of OpenLP data and manage them with Google Drive.">
+  <meta property="og:image" content="https://ucbtrigales.github.io/openlp-vault/assets/screenshots/en/main-window.png">
+  <title>OpenLP Vault</title>
+  <link rel="icon" type="image/png" href="assets/openlp-vault-logo.png">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="./"><img src="assets/openlp-vault-logo.png" alt="" width="34" height="34">OpenLP Vault</a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#documentation">Documentation</a>
+        <a href="https://github.com/ucbtrigales/openlp-vault">GitHub</a>
+        <a class="language" href="es/" lang="es" hreflang="es">Español</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section>
+      <div class="intro container">
+        <div>
+          <div class="title-row"><img src="assets/openlp-vault-logo.png" alt="" width="82" height="82"><h1>OpenLP Vault</h1></div>
+          <p class="lead">OpenLP Vault creates complete backups of OpenLP data and lets you store, restore, and delete them using Google Drive.</p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/ucbtrigales/openlp-vault">View on GitHub</a>
+            <a class="button" href="https://github.com/ucbtrigales/openlp-vault/blob/main/docs/en/usage.md">Read the usage guide</a>
+          </div>
+        </div>
+        <div class="intro-image"><img src="assets/screenshots/en/main-window.png" alt="OpenLP Vault main window" width="620" height="450"></div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <h2>Features</h2>
+        <div class="feature-list">
+          <article><h3>Local and Google Drive backups</h3><p>Create local backups or upload them to a Google Drive folder.</p></article>
+          <article><h3>Restore and deletion</h3><p>List, download, restore, and delete backups stored in Drive.</p></article>
+          <article><h3>Desktop interface and CLI</h3><p>Use the desktop interface or the commands available in the terminal.</p></article>
+          <article><h3>Google Drive authentication</h3><p>Uses OAuth and reuses the authorization token stored locally.</p></article>
+          <article><h3>Integrity</h3><p>Includes SHA-256 integrity and versioning utilities.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="basic-usage">
+      <div class="container">
+        <h2>Basic usage</h2>
+        <div class="usage-grid">
+          <div>
+            <h3>Desktop interface</h3>
+            <pre><code>openlp-vault-gui</code></pre>
+            <p>On first launch, Settings opens if no reusable OAuth authorization exists. Provide:</p>
+            <ul><li>The path to <code>credentials.json</code>.</li><li>The OpenLP data directory.</li><li>The Google Drive folder name.</li></ul>
+          </div>
+          <div>
+            <h3>Command-line interface</h3>
+            <pre><code>openlp-vault --help</code></pre>
+            <p>Available commands are <code>auth</code>, <code>backup</code>, <code>restore</code>, and <code>delete</code>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots">
+      <div class="container">
+        <h2>Screenshots</h2>
+        <div class="gallery">
+          <figure><a href="assets/screenshots/en/main-window.png"><img src="assets/screenshots/en/main-window.png" alt="Main application window" loading="lazy"></a><figcaption>Main window</figcaption></figure>
+          <figure><a href="assets/screenshots/en/upload-backup.png"><img src="assets/screenshots/en/upload-backup.png" alt="Create and upload backup dialog" loading="lazy"></a><figcaption>Create and upload a backup</figcaption></figure>
+          <figure><a href="assets/screenshots/en/download-backup.png"><img src="assets/screenshots/en/download-backup.png" alt="Download and restore backup dialog" loading="lazy"></a><figcaption>Download and restore a backup</figcaption></figure>
+          <figure><a href="assets/screenshots/en/settings.png"><img src="assets/screenshots/en/settings.png" alt="Settings window" loading="lazy"></a><figcaption>Settings</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="documentation">
+      <div class="container">
+        <h2>Documentation</h2>
+        <ul class="document-list">
+          <li><a href="https://github.com/ucbtrigales/openlp-vault/blob/main/docs/en/usage.md">Usage guide</a></li>
+          <li><a href="https://github.com/ucbtrigales/openlp-vault/blob/main/docs/en/drive_setup.md">Google Drive setup</a></li>
+          <li><a href="https://github.com/ucbtrigales/openlp-vault/blob/main/docs/en/architecture.md">Architecture</a></li>
+          <li><a href="https://github.com/ucbtrigales/openlp-vault/blob/main/CONTRIBUTING.md">Contributing</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><p>OpenLP Vault is free software licensed under <a href="https://github.com/ucbtrigales/openlp-vault/blob/main/LICENSE">GPL-3.0-or-later</a>.</p><p>Copyright © 2026 Christian González G.</p><p>Maintained by the community of Iglesia Evangélica Unión de Centros Bíblicos “Trigales”.</p></div></footer>
+</body>
+</html>

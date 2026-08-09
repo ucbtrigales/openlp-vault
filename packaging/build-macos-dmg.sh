@@ -10,7 +10,7 @@ python -m pip install --upgrade pip setuptools wheel
 python -m pip install -r requirements.txt pyinstaller
 
 python -m PyInstaller --clean --onefile --console --name openlp-vault --paths src --collect-all openlp_vault --collect-submodules openlp_vault --add-data "LICENSE:." --add-data "NOTICE:." src/openlp_vault/__main__.py
-python -m PyInstaller --clean --onefile --windowed --name OpenLPVault-gui --paths src --collect-all openlp_vault --collect-submodules openlp_vault --add-data "LICENSE:." --add-data "NOTICE:." \
+python -m PyInstaller --clean --onefile --windowed --name OpenLPVault-gui --icon packaging/openlp-vault.png --paths src --collect-all openlp_vault --collect-submodules openlp_vault --add-data "LICENSE:." --add-data "NOTICE:." \
   --hidden-import openlp_vault.backup \
   --hidden-import openlp_vault.auth \
   --hidden-import openlp_vault.config \

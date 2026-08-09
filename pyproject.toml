@@ -24,7 +24,7 @@ openlp-vault = "openlp_vault.cli:cli"
 openlp-vault-gui = "openlp_vault.gui:main"
 
 [project.urls]
-Homepage = "https://github.com/ucbtrigales/openlp-vault"
+Homepage = "https://ucbtrigales.github.io/openlp-vault/"
 Repository = "https://github.com/ucbtrigales/openlp-vault"
 
 [build-system]
@@ -37,4 +37,8 @@ packages = ["openlp_vault"]
 include-package-data = true
 
 [tool.setuptools.package-data]
-openlp_vault = ["locale/*/LC_MESSAGES/*.mo", "locale/*/LC_MESSAGES/*.po"]
+openlp_vault = [
+    "assets/*.png",
+    "locale/*/LC_MESSAGES/*.mo",
+    "locale/*/LC_MESSAGES/*.po",
+]

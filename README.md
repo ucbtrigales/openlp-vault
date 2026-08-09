@@ -5,7 +5,9 @@ English | [Español](README.es.md)
 OpenLP Vault creates complete backups of OpenLP data and lets you store,
 restore, and delete them using Google Drive.
 
-Project: <https://github.com/ucbtrigales/openlp-vault>
+Project: <https://ucbtrigales.github.io/openlp-vault/>
+
+Repository: <https://github.com/ucbtrigales/openlp-vault>
 
 ## Features
 
@@ -14,7 +16,6 @@ Project: <https://github.com/ucbtrigales/openlp-vault>
 - CLI commands for authentication, backup, restore, and deletion.
 - Automatic OpenLP data-directory discovery on Linux, macOS, and Windows.
 - OAuth authentication with local token reuse.
-- English and Spanish interfaces based on the system locale.
 - SHA-256 integrity and versioning utilities.
 - Packaging for Windows, macOS, and Linux AppImage.
 

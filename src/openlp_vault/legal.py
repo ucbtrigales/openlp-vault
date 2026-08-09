@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 LEGAL_DOCUMENTS = {"LICENSE", "NOTICE"}
-PROJECT_URL = "https://github.com/ucbtrigales/openlp-vault"
+PROJECT_URL = "https://ucbtrigales.github.io/openlp-vault/"
 COPYRIGHT_NOTICE = "Copyright © 2026 Christian González G."
 CONTACT_EMAIL = "christian.gonzalez@ucbtrigales.org"
 MAINTAINING_COMMUNITY = (

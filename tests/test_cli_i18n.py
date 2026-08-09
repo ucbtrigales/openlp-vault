@@ -45,7 +45,7 @@ def test_license_command_is_localized_and_contains_project_information():
     assert "Copyright © 2026 Christian González G." in output
     assert "Contacto: christian.gonzalez@ucbtrigales.org" in output
     assert "La iglesia no es titular del copyright." in output
-    assert "https://github.com/ucbtrigales/openlp-vault" in output
+    assert "https://ucbtrigales.github.io/openlp-vault/" in output
 
 
 def test_version_output_is_concise():
