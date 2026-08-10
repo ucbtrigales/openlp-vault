@@ -46,6 +46,28 @@ DRIVE_STATUS_COLORS = {
 }
 
 
+def _asset_path(filename):
+    """Locate a bundled GUI asset in source and frozen applications."""
+    package_asset = Path(__file__).resolve().with_name("assets") / filename
+    if package_asset.is_file():
+        return package_asset
+
+    # PyInstaller extracts one-file applications below ``sys._MEIPASS``. The
+    # fallback also supports older bundles where data was placed at the root.
+    bundle_root = getattr(sys, "_MEIPASS", None)
+    if bundle_root:
+        bundle_root = Path(bundle_root)
+        for candidate in (
+            bundle_root / "openlp_vault" / "assets" / filename,
+            bundle_root / "assets" / filename,
+            bundle_root / filename,
+        ):
+            if candidate.is_file():
+                return candidate
+
+    return package_asset
+
+
 class OpenLPVaultGUI(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -53,7 +75,7 @@ class OpenLPVaultGUI(tk.Tk):
         self.geometry("500x400")
         self.resizable(True, True)
 
-        logo_path = Path(__file__).with_name("assets") / "openlp-vault-logo.png"
+        logo_path = _asset_path("openlp-vault-logo.png")
         try:
             self._application_logo_image = tk.PhotoImage(file=str(logo_path))
             self.iconphoto(True, self._application_logo_image)
@@ -885,7 +907,7 @@ class OpenLPVaultGUI(tk.Tk):
         frame.pack(fill="both", expand=True)
         heading_frame = ttk.Frame(frame)
         heading_frame.pack(fill="x", pady=(0, 12))
-        logo_path = Path(__file__).with_name("assets") / "openlp-vault-logo.png"
+        logo_path = _asset_path("openlp-vault-logo.png")
         try:
             logo_image = tk.PhotoImage(file=str(logo_path))
             scale_factor = max(1, (logo_image.width() + 79) // 80)

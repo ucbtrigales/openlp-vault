@@ -5,22 +5,49 @@ import platform
 from pathlib import Path
 
 
-DEFAULT_LINUX_PATHS = [
-    Path.home() / ".var" / "app" / "org.openlp.OpenLP" / "data" / "openlp",
-    Path.home() / ".local" / "share" / "openlp",
-    Path.home() / ".config" / "openlp",
-    Path.home() / ".openlp",
-]
-DEFAULT_MAC_PATHS = [
-    Path.home() / "Library" / "Application Support" / "openlp" / "Data",
-    Path.home() / "Library" / "Application Support" / "openlp" / "data",
-    Path.home() / "Library" / "Application Support" / "openlp",
-]
-DEFAULT_WINDOWS_PATHS = [
-    Path(os.getenv("LOCALAPPDATA", "")) / "openlp" / "data",
-    Path(os.getenv("APPDATA", "")) / "openlp" / "data", 
-    Path(os.getenv("USERPROFILE", "")) / "AppData" / "Local" / "openlp",
-]
+def _linux_candidates() -> list[Path]:
+    """Return standard OpenLP data locations in Linux preference order."""
+    home = Path.home()
+    data_home = Path(os.getenv("XDG_DATA_HOME", home / ".local" / "share"))
+    config_home = Path(os.getenv("XDG_CONFIG_HOME", home / ".config"))
+    return [
+        home / ".var" / "app" / "org.openlp.OpenLP" / "data" / "openlp",
+        data_home / "openlp",
+        config_home / "openlp",
+        home / ".openlp",
+    ]
+
+
+def _mac_candidates() -> list[Path]:
+    """Return standard OpenLP data locations in macOS preference order."""
+    application_support = Path.home() / "Library" / "Application Support"
+    openlp_root = application_support / "openlp"
+    return [openlp_root / "data", openlp_root / "Data", openlp_root]
+
+
+def _windows_candidates() -> list[Path]:
+    """Return standard OpenLP data locations in Windows preference order."""
+    candidates = []
+    appdata = os.getenv("APPDATA")
+    local_appdata = os.getenv("LOCALAPPDATA")
+    user_profile = os.getenv("USERPROFILE")
+
+    if appdata:
+        roaming_root = Path(appdata) / "OpenLP"
+        candidates.extend((roaming_root / "data", roaming_root))
+    elif user_profile:
+        roaming_root = Path(user_profile) / "AppData" / "Roaming" / "OpenLP"
+        candidates.extend((roaming_root / "data", roaming_root))
+
+    # Retain compatibility with non-standard or older local installations, but
+    # only after the documented roaming locations.
+    if local_appdata:
+        local_root = Path(local_appdata) / "OpenLP"
+        candidates.extend((local_root / "data", local_root))
+
+    return candidates
+
+
 COMMON_MARKERS = [
     "songs",
     "bibles",
@@ -45,10 +72,10 @@ def _is_openlp_installation(path: Path) -> bool:
 def _default_candidates() -> list[Path]:
     system = platform.system().lower()
     if system == "darwin":
-        return DEFAULT_MAC_PATHS
+        return _mac_candidates()
     if system == "windows":
-        return DEFAULT_WINDOWS_PATHS
-    return DEFAULT_LINUX_PATHS
+        return _windows_candidates()
+    return _linux_candidates()
 
 
 def find_openlp_installation() -> Path | None:
