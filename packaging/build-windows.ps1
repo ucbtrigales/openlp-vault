@@ -31,6 +31,7 @@ $pyInstallerGuiArgs = @(
     "--windowed",
     "--name", "openlp-vault-gui",
     "--icon", "packaging/openlp-vault.ico",
+    "--add-data", "src/openlp_vault/assets/openlp-vault-logo.png:openlp_vault/assets",
     "--paths", "src",
     "--collect-submodules", "openlp_vault",
     "--collect-data", "openlp_vault",
