@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import ctypes
 import gettext
 import importlib
+import locale
 import os
+import platform
 from pathlib import Path
 
 DOMAIN = "openlp_vault"
@@ -23,13 +26,28 @@ def normalize_language(value: str | None) -> str | None:
     return language if language in SUPPORTED_LANGUAGES else None
 
 
+def _windows_user_language() -> str | None:
+    """Read the Windows display language for the current user."""
+    try:
+        language_id = ctypes.windll.kernel32.GetUserDefaultUILanguage()
+    except (AttributeError, OSError):
+        return None
+    return locale.windows_locale.get(language_id)
+
+
 def detect_language(environ: dict[str, str] | None = None) -> str:
-    """Resolve the language from the standard system locale variables."""
+    """Resolve the language from explicit settings and the operating system."""
     environment = os.environ if environ is None else environ
     for variable in LANGUAGE_ENVIRONMENT_VARIABLES:
         language = normalize_language(environment.get(variable))
         if language:
             return language
+
+    if platform.system().lower() == "windows":
+        language = normalize_language(_windows_user_language())
+        if language:
+            return language
+
     return "en"
 
 

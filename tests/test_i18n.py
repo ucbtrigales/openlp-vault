@@ -1,5 +1,6 @@
 import gettext
 
+from openlp_vault import i18n
 from openlp_vault.i18n import detect_language, get_translation, normalize_language
 
 
@@ -15,6 +16,20 @@ def test_locale_environment_precedence():
     assert detect_language(environment) == "es"
     environment["LC_ALL"] = "en_GB.UTF-8"
     assert detect_language(environment) == "en"
+
+
+def test_windows_uses_current_user_display_language(monkeypatch):
+    monkeypatch.setattr(i18n.platform, "system", lambda: "Windows")
+    monkeypatch.setattr(i18n, "_windows_user_language", lambda: "es_CL")
+
+    assert detect_language({}) == "es"
+
+
+def test_environment_language_overrides_windows_display_language(monkeypatch):
+    monkeypatch.setattr(i18n.platform, "system", lambda: "Windows")
+    monkeypatch.setattr(i18n, "_windows_user_language", lambda: "es_CL")
+
+    assert detect_language({"LANG": "en_US.UTF-8"}) == "en"
 
 
 def test_unknown_or_missing_locale_falls_back_to_english():
