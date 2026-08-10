@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 import os
+import socket
 import sys
 import tempfile
 import time
@@ -458,7 +459,7 @@ class OpenLPVaultGUI(tk.Tk):
         ).grid(row=0, column=2, sticky="nsew", padx=(6, 0))
 
     def _default_backup_filename(self):
-        hostname = os.uname().nodename.replace(" ", "_")
+        hostname = socket.gethostname().replace(" ", "_")
         timestamp = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
         return f"openlp_backup_{hostname}_{timestamp}"
 
